@@ -83,7 +83,7 @@ class PaymentController extends Controller
             if (!$payment) {
                 throw new \Exception("Error, invoice not found");
             }
-            if (!in_array(["200", "201"], $request->status)) {
+            if (!in_array(["200", "201"], $request->status_code)) {
                 throw new \Exception("Error, pay invoice");
             }
 

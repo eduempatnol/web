@@ -68,6 +68,7 @@
 <script>
   $("#pay").click(function (event) {
     event.preventDefault();
+    $(this).prop("disabled", true);
 
     $.post("{{ route('payment.course') }}", {
       _method: "POST",
