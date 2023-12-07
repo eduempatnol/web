@@ -64,7 +64,6 @@
 
 @push('js')
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
 
 <script>
   $("#pay").click(function (event) {
@@ -77,19 +76,7 @@
       amount: $("#total-amount").data("total")
     },
     function (data, status) {
-      // snap.pay(data.snap_token, {
-      //   onSuccess: function (result) {
-      //     location.reload();
-      //   },
-      //   onPending: function (result) {
-      //     location.reload();
-      //   },
-      //   onError: function (result) {
-      //     location.reload();
-      //   }
-      // });
-      // return false;
-      console.log(data);
+      return location.href = data.snap_url
     });
   });
 </script>
