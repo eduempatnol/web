@@ -77,18 +77,19 @@
       amount: $("#total-amount").data("total")
     },
     function (data, status) {
-      snap.pay(data.snap_token, {
-        onSuccess: function (result) {
-          location.reload();
-        },
-        onPending: function (result) {
-          location.reload();
-        },
-        onError: function (result) {
-          location.reload();
-        }
-      });
-      return false;
+      // snap.pay(data.snap_token, {
+      //   onSuccess: function (result) {
+      //     location.reload();
+      //   },
+      //   onPending: function (result) {
+      //     location.reload();
+      //   },
+      //   onError: function (result) {
+      //     location.reload();
+      //   }
+      // });
+      // return false;
+      console.log(data);
     });
   });
 </script>
