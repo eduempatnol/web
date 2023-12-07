@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text("note")->nullable();
             $table->enum("status", ["Pending", "Success", "Expired", "Error"])->default("Pending");
             $table->string("snap_token")->nullable();
+            $table->string("snap_url")->nullable();
             $table->timestamps();
         });
     }

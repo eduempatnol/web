@@ -53,12 +53,14 @@ class PaymentController extends Controller
                 ],
             ];
             $snapToken = MidtransSnap::getSnapToken($payload);
+            $snapUrl = MidtransSnap::getSnapUrl($payload);
 
             $courseInvoice->snap_token = $snapToken;
+            $courseInvoice->snap_url = $snapUrl;
             $courseInvoice->save();
 
             DB::commit();
-            return response()->json(["snap_token" => $snapToken]);
+            return response()->json(["snap_token" => $snapToken, "snap_url" => $snapUrl]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(["message" => $e->getMessage()], 400);
