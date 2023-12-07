@@ -79,16 +79,13 @@
     function (data, status) {
       snap.pay(data.snap_token, {
         onSuccess: function (result) {
-          console.log(result)
-          // location.reload();
+          location.reload();
         },
         onPending: function (result) {
-          console.log(result)
-          // location.reload();
+          location.reload();
         },
         onError: function (result) {
-          console.log(result)
-          // location.reload();
+          location.reload();
         }
       });
       return false;

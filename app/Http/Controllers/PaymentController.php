@@ -60,7 +60,8 @@ class PaymentController extends Controller
             $courseInvoice->save();
 
             DB::commit();
-            return response()->json(["snap_token" => $snapToken, "snap_url" => $snapUrl]);
+            // return response()->json(["snap_token" => $snapToken, "snap_url" => $snapUrl]);
+            return redirect()->away($courseInvoice->snap_url);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(["message" => $e->getMessage()], 400);
