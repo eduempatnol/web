@@ -91,6 +91,7 @@ class PaymentController extends Controller
             $payment->save();
 
             $checkout = new CourseCheckout();
+            $checkout->note = "Berhasil melakukan pembelian kelas";
             $checkout->user_id = $payment->user_id;
             $checkout->course_id = $payment->course_id;
             $checkout->invoice_id = $payment->id;
