@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create("course_invoices", function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger("course_id");
             $table->string("code")->unique();
             $table->string("name");
             $table->string("email")->nullable();
@@ -24,6 +26,9 @@ return new class extends Migration
             $table->string("snap_token")->nullable();
             $table->string("snap_url")->nullable();
             $table->timestamps();
+
+            $table->foreign("user_id")->references("id")->on("users")->onUpdate("cascade")->onDelete("cascade");
+            $table->foreign("course_id")->references("id")->on("courses")->onUpdate("cascade")->onDelete("cascade");
         });
     }
 

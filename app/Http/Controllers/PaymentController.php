@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\CourseCheckout;
 use App\Models\CourseInvoice;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,12 +25,17 @@ class PaymentController extends Controller
         try {
             DB::beginTransaction();
 
+            $course = Course::find($request->course_name);
+            if (!$course) throw new \Exception("Error, course not found");
+
             $courseInvoice = new CourseInvoice();
+            $courseInvoice->user_id = Auth::user()->id;
+            $courseInvoice->crouse_id = $course->id;
             $courseInvoice->code = "EIEN-". time() . rand(10, 998);
             $courseInvoice->name = Auth::user()->name;
             $courseInvoice->email = Auth::user()->email;
             $courseInvoice->amount = $request->amount;
-            $courseInvoice->note = "Pembelian Kelas | ". $request->course_name ." | ". Carbon::now();
+            $courseInvoice->note = "Pembelian Kelas | ". $course->course_title ." | ". Carbon::now();
             $courseInvoice->save();
 
             $payload = [
@@ -61,10 +68,40 @@ class PaymentController extends Controller
 
             DB::commit();
             return response()->json(["snap_token" => $snapToken, "snap_url" => $snapUrl]);
-            // return redirect()->away($courseInvoice->snap_url);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(["message" => $e->getMessage()], 400);
+        }
+    }
+
+    public function finishPayment(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $payment = CourseInvoice::where("code", $request->order_id)->first();
+
+            if (!$payment) {
+                throw new \Exception("Error, invoice not found");
+            }
+            if (!in_array(["200", "201"], $request->status)) {
+                throw new \Exception("Error, pay invoice");
+            }
+
+            $payment->status = "Success";
+            $payment->save();
+
+            $checkout = new CourseCheckout();
+            $checkout->user_id = $payment->user_id;
+            $checkout->course_id = $payment->course_id;
+            $checkout->invoice_id = $payment->id;
+            $checkout->save();
+
+            DB::commit();
+
+            return redirect()->route("user.dashboard");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return abort(403);
         }
     }
 }

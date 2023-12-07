@@ -10,12 +10,14 @@ class CourseInvoice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code',
-        'name',
-        'email',
-        'amount',
-        'note',
-        'status',
-        'snap_token',
+        "user_id",
+        "code",
+        "name",
+        "email",
+        "amount",
+        "note",
+        "status",
+        "snap_token",
+        "snap_url",
     ];
 }

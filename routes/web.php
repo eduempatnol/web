@@ -40,4 +40,5 @@ Route::group(["prefix" => "course"], function() {
 
 Route::group(["prefix" => "payment", "middleware" => "auth"], function() {
 	Route::post("course", [PaymentController::class, "payCourse"])->name("payment.course");
+	Route::get("finish", [PaymentController::class, "finishPayment"])->name("payment.finish");
 });

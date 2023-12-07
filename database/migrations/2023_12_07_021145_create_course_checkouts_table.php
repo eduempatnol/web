@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('course_checkouts', function (Blueprint $table) {
             $table->id();
+            $table->text("note");
+            $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger("course_id");
+            $table->unsignedBigInteger("invoice_id");
+            $table->boolean("active")->default(1);
             $table->timestamps();
         });
     }
