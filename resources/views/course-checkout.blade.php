@@ -12,7 +12,7 @@
       <div class="rounded-[16px] bg-white overflow-hidden">
         <img src="{{ asset($course->course_thumbnail) }}" alt="">
         <div class="p-[15px]">
-          <h3 class="font-semibold">{{ $course->course_title }}</h3>
+          <h3 class="font-semibold" id="course-title" data-title="{{ $course->course_title }}">{{ $course->course_title }}</h3>
           <div class="flex items-center gap-0.5 mt-5">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #F4A42B;transform: ;msFilter:;"><path d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z"></path></svg>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #F4A42B;transform: ;msFilter:;"><path d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z"></path></svg>
@@ -67,24 +67,28 @@
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
 
 <script>
-  $('#pay').click(function (event) {
+  $("#pay").click(function (event) {
     event.preventDefault();
 
     $.post("{{ route('payment.course') }}", {
-      _method: 'POST',
-      _token: '{{ csrf_token() }}',
-      amount: $('#total-amount').data("total")
+      _method: "POST",
+      _token: "{{ csrf_token() }}",
+      course_name: $("#course-title").data("title"),
+      amount: $("#total-amount").data("total")
     },
     function (data, status) {
       snap.pay(data.snap_token, {
         onSuccess: function (result) {
-          location.reload();
+          console.log(result)
+          // location.reload();
         },
         onPending: function (result) {
-          location.reload();
+          console.log(result)
+          // location.reload();
         },
         onError: function (result) {
-          location.reload();
+          console.log(result)
+          // location.reload();
         }
       });
       return false;
