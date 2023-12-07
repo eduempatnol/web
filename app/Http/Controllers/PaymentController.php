@@ -30,7 +30,7 @@ class PaymentController extends Controller
 
             $courseInvoice = new CourseInvoice();
             $courseInvoice->user_id = Auth::user()->id;
-            $courseInvoice->crouse_id = $course->id;
+            $courseInvoice->course_id = $course->id;
             $courseInvoice->code = "EIEN-". time() . rand(10, 998);
             $courseInvoice->name = Auth::user()->name;
             $courseInvoice->email = Auth::user()->email;
