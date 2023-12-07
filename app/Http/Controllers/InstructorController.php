@@ -41,7 +41,7 @@ class InstructorController extends Controller
                 $filenameSave = time() . "_" . rand(100, 9999) . "." . $extension;
                 $file->move("uploads", $filenameSave);
 
-                $course->course_thumbnail = "uploads/" . $file->getClientOriginalName();
+                $course->course_thumbnail = "uploads/" . $filenameSave;
             }
 
             $course->user_id = Auth::user()->id;
