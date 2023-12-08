@@ -77,7 +77,7 @@
     $(`#btn-can-playback-${btnIter}`).addClass("course-button-active");
     $("#course-video-playback").empty();
     $("#course-video-playback").append(`
-      <iframe src="${lessonLink}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <iframe src="${lessonLink.replace("watch?v=", "v/")}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     `);
   }
 </script>
