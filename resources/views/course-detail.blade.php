@@ -1,5 +1,7 @@
 @extends("layouts.pagelayout")
 @section("title", $course->course_title)
+@section("description", $course->course_title)
+@section("image", $course->course_thumbnail)
 
 @section("content")
 <div class="container px-3 md:px-10 xl:px-48 py-20">

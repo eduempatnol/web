@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title>Dashboard @yield('title')</title>
     <meta name="description" content="" />
-    <link rel="icon" type="image/x-icon" href="{{ asset("assets/img/favicon/favicon.ico") }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset("favicon.ico") }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
