@@ -1,97 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="/assets/">
+<html data-theme="light">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Login Basic</title>
-    <meta name="description" content="" />
-    <link rel="icon" type="image/x-icon" href="{{ asset("assets/img/favicon/favicon.ico") }}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="{{ asset("favicon.ico") }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{{ asset("css/page.css?v=1.0.1") }}" />
+    <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset("assets/vendor/fonts/boxicons.css") }}" />
-    <link rel="stylesheet" href="{{ asset("assets/vendor/css/core.css") }}" />
-    <link rel="stylesheet" href="{{ asset("assets/vendor/css/theme-default.css") }}" />
-    <link rel="stylesheet" href="{{ asset("assets/css/demo.css") }}" />
-    <link rel="stylesheet" href="{{ asset("assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css") }}" />
-    <link rel="stylesheet" href="{{ asset("assets/vendor/css/pages/page-auth.css") }}" />
-    <script src="{{ asset("assets/vendor/js/helpers.js") }}"></script>
-    <script src="{{ asset("assets/js/config.js") }}"></script>
+    <link rel="canonical" href="{{ URL::current() }}">
+    <title>Masuk Edukasi 4.0</title>
+    <meta name="keywords" content="Education 3.0, Education 4.0, Edukasi 3.0, Edukasi 4.0, Self Improvment, Pengembangan Skill">
+    <meta name="author" content="EdukasiEmpatNol" />
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="{{ asset("favicon.jpg") }}">
+    <meta property="og:title" content="Edukasi 4.0">
+    <meta property="og:site_name" content="edukasiempatnol">
+    <meta property="og:url" content="{{ URL::current() }}">
   </head>
+
   <body>
-    <div class="container-xxl">
-      <div class="authentication-wrapper authentication-basic container-p-y">
-        <div class="authentication-inner">
-          <div class="card">
-            <div class="card-body">
-              <div class="app-brand justify-content-center mb-3">
-                <a href="/" class="app-brand-link gap-2">
-                  <img src="{{ asset("favicon.jpg") }}" class="img-fluid rounded" alt="">
-                </a>
-              </div>
-              <form id="formAuthentication" class="mb-3" action="{{ route("login.post") }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email or Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email or username"
-                    autofocus
-                    autocomplete="off"
-                  />
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                    <label class="form-label" for="password">Password</label>
-                    <a href="auth-forgot-password-basic.html">
-                      <small>Forgot Password?</small>
-                    </a>
-                  </div>
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      autocomplete="off"
-                    />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                    <label class="form-check-label" for="remember-me">Remember Me</label>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
-                </div>
-              </form>
-              <p class="text-center">
-                <span>New on our platform?</span>
-                <a href="{{ route("register") }}">
-                  <span>Create an account</span>
-                </a>
-              </p>
+    <div class="min-h-screen flex justify-center items-center px-5 select-none">
+      <div class="w-full max-w-[480px]">
+        <div class="flex justify-center">
+          <img src="{{ asset("favicon.jpg") }}" class="rounded-lg w-1/4 md:w-1/6" alt="">
+        </div>
+        <div class="py-[36px] px-[31px] bg-white rounded-lg mt-3 md:mt-5">
+          <span class="text-xl md:text-2xl">Sign In</span>
+          <form class="mt-10" method="POST" action="{{ route("login") }}">
+            @csrf
+            <div class="flex flex-col gap-1 text-black">
+              <label for="email">Email</label>
+              <input type="text" class="outline-none text-sm border py-2.5 px-3 rounded-lg" name="email" autocomplete="off" placeholder="example@edukasi.com" autofocus>
             </div>
-          </div>
+            <div class="flex flex-col gap-1 mt-4 text-black">
+              <label for="email">Password</label>
+              <input type="password" class="outline-none text-sm border py-2.5 px-3 rounded-lg" name="password" autocomplete="off" placeholder="example@edukasi.com">
+            </div>
+            <div class="mt-8">
+              <button class="w-full bg-primary text-white font-semibold py-3 rounded-lg">Sign In</button>
+              <div class="text-center text-sm mt-3">
+                <span class="text-black">Belum punya akun?</span>
+                <a href="{{ route("register") }}" class="text-primary">Daftar disini</a>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-    <script src="{{ asset("assets/vendor/libs/jquery/jquery.js") }}"></script>
-    <script src="{{ asset("assets/vendor/libs/popper/popper.js") }}"></script>
-    <script src="{{ asset("assets/vendor/js/bootstrap.js") }}"></script>
-    <script src="{{ asset("assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js") }}"></script>
-    <script src="{{ asset("assets/vendor/js/menu.js") }}"></script>
-    <script src="{{ asset("assets/js/main.js") }}"></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>

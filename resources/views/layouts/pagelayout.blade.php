@@ -27,7 +27,6 @@
     @hasSection('image')
       <meta property="og:image" content="@yield('image')">
     @endif
-    <meta property="og:type" content="article">
     @hasSection("title")
       <meta property="og:title" content="@yield('title')">
     @else
