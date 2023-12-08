@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CourseCheckout extends Model
 {
     use HasFactory;
+
+    public function course() {
+        return $this->belongsTo(Course::class, "course_id");
+    }
 }

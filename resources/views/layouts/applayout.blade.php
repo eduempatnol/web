@@ -94,14 +94,22 @@
             <li class="menu-item @yield("dashboard")">
               <a href="{{ route("login") }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div data-i18n="Analytics">Dashboard</div>
+                <div>Dashboard</div>
               </a>
             </li>
             @if (Auth::user()->role->role_slug == "instructor")
               <li class="menu-item @yield("courses")">
                 <a href="{{ route("instructor.courses") }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-book-reader"></i>
-                  <div data-i18n="Analytics">Kursus</div>
+                  <div>Kursus</div>
+                </a>
+              </li>
+            @endif
+            @if (Auth::user()->role->role_slug == "user")
+              <li class="menu-item @yield("class")">
+                <a href="{{ route("user.class") }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
+                  <div>Kelasku</div>
                 </a>
               </li>
             @endif

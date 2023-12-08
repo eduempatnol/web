@@ -23,6 +23,8 @@ Route::group(["prefix" => "admin", "middleware" => ["is_admin"]], function() {
 
 Route::group(["prefix" => "user", "middleware" => ["is_user"]], function() {
 	Route::get("", [UserController::class, "dashboard"])->name("user.dashboard");
+	Route::get("class", [UserController::class, "class"])->name("user.class");
+	Route::get("class/{courseId}", [UserController::class, "getCourseUser"])->name("user.class.course");
 });
 
 Route::group(["prefix" => "instructor", "middleware" => ["is_instructor"]], function() {

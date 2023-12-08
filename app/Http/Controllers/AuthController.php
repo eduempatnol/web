@@ -17,7 +17,7 @@ class AuthController extends Controller
                 return redirect()->route("admin.dashboard");
             }
             if ($user->role->role_slug == "user") {
-                return redirect()->route("user.user");
+                return redirect()->route("user.dashboard");
             }
             if ($user->role->role_slug == "instructor") {
                 return redirect()->route("instructor.dashboard");

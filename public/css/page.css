@@ -30,3 +30,14 @@ body {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
+
+.course-button-active {
+  background: #34364a !important;
+  color: #fff !important;
+}
+
+.course-button-active div,
+.course-button-active svg {
+  color: #fff !important;
+  fill: #fff !important;
+}

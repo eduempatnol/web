@@ -12,6 +12,7 @@ module.exports = {
         "primary": "#506FFF",
         "success": "#22C58B",
         "secondary": "#E5E9F2",
+        "secondary-2": "#E5E9F2",
         "gold": "#F4A42B"
       }
     },
