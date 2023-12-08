@@ -33,11 +33,9 @@
 @push("js")
 <script>
   let courseActive = false;
-  let courseActiveLink = "";
 
   function showCourse(param) {
     $.get(`/user/class/${param}`, function(response, status) {
-      // console.log(response);
       if (!courseActive) {
         $("#list-course").removeClass("col-sm-12");
         $("#list-course").addClass("col-md-8 col-sm-12");
@@ -51,7 +49,6 @@
             </div>
             <div class="mt-3 rounded-[16px] bg-white p-[25px]">
               ${response.data.course.lessons.map((data, iter) => {
-                if (iter == 0) courseActiveLink = response.data.course.lessons[0].lesson_link;
                 return `
                   <button
                     class="bg-secondary-2 rounded-full flex items-center justify-between gap-3 p-3 w-full mb-3 btn-can-playback ${iter == 0 ? "course-button-active" : ""}"

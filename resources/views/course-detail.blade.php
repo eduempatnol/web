@@ -54,14 +54,18 @@
   </div>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-16">
     <div class="col-span-2">
-      <div class="wrapper-course-detail">
-        <iframe src="{{ $course->lessons[0]->lesson_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="wrapper-course-detail" id="course-video-playback">
+        <iframe src="{{ str_replace("watch?v=", "v/", $course->lessons[0]->lesson_link) }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
     </div>
     <div class="col-span-1">
       <div class="rounded-t-[16px] bg-white p-[25px]">
-        @foreach ($course->lessons as $lesson)
-          <button class="bg-secondary rounded-full flex items-center justify-between gap-3 p-3 w-full mb-3">
+        @foreach ($course->lessons as $key => $lesson)
+          <button
+            class="bg-secondary rounded-full flex items-center justify-between gap-3 p-3 w-full mb-3 btn-can-playback {{ $key == 0 ? "course-button-active" : "" }}"
+            onclick="playCourse({{ $key }}, '{{ urldecode($lesson->lesson_link) }}')"
+            id="btn-can-playback-{{ $key }}"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" style="fill: #34364a;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path></svg>
             <div class="text-black text-left flex-1 text-1line">{{ $lesson->lesson_title }}</div>
             <span>{{ $lesson->lesson_duration }}</span>
@@ -83,3 +87,18 @@
   </div>
 </div>
 @endsection
+
+@push("js")
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+<script>
+  function playCourse(btnIter, lessonLink) {
+    $(".btn-can-playback").removeClass("course-button-active");
+    $(`#btn-can-playback-${btnIter}`).addClass("course-button-active");
+    $("#course-video-playback").empty();
+    $("#course-video-playback").append(`
+      <iframe src="${lessonLink.replace("watch?v=", "v/")}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    `);
+  }
+</script>
+@endpush
