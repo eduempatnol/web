@@ -8,7 +8,7 @@
 
 @section("content")
 <div class="row" id="wrapper-course">
-  <div class="col-sm-12" id="list-course">
+  <div class="col-sm-12 transition-all" id="list-course">
     <div class="card">
       <div class="card-body">
         <h3 class="text-2xl mb-3">List kelas</h3>
@@ -33,6 +33,7 @@
 @push("js")
 <script>
   let courseActive = false;
+  let courseActiveLink = "";
 
   function showCourse(param) {
     $.get(`/user/class/${param}`, function(response, status) {
@@ -44,12 +45,13 @@
         $(".col-class").addClass("col-md-4 col-sm-6");
 
         $("#wrapper-course").append(`
-          <div class="col-md-4 col-sm-12 mt-3">
+          <div class="col-md-4 col-sm-12 mt-3 transition-all" id="course-active">
             <div class="wrapper-course-detail" id="course-video-playback">
               <iframe src="${response.data.course.lessons[0].lesson_link}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
             <div class="mt-3 rounded-[16px] bg-white p-[25px]">
               ${response.data.course.lessons.map((data, iter) => {
+                if (iter == 0) courseActiveLink = response.data.course.lessons[0].lesson_link;
                 return `
                   <button
                     class="bg-secondary-2 rounded-full flex items-center justify-between gap-3 p-3 w-full mb-3 btn-can-playback ${iter == 0 ? "course-button-active" : ""}"
@@ -72,7 +74,6 @@
   }
 
   function playCourse(btnIter, lessonLink) {
-    console.log(btnIter, lessonLink);
     $(".btn-can-playback").removeClass("course-button-active");
     $(`#btn-can-playback-${btnIter}`).addClass("course-button-active");
     $("#course-video-playback").empty();
