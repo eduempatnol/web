@@ -2,8 +2,8 @@
 @section("class", "active")
 
 @push("css")
-<link type="text/css" rel="stylesheet" href="{{ asset("css/page.css?v=1.0.0") }}" />
-<link type="text/css" rel="stylesheet" href="{{ mix("css/app.css") }}" />
+<link type="text/css" rel="stylesheet" href="{{ asset("css/page.css?v=1.0.1") }}" />
+{{-- <link type="text/css" rel="stylesheet" href="{{ mix("css/app.css") }}" /> --}}
 @endpush
 
 @section("content")
@@ -47,11 +47,11 @@
             <div class="wrapper-course-detail" id="course-video-playback">
               <iframe src="${response.data.course.lessons[0].lesson_link}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
-            <div class="mt-3 rounded-[16px] bg-white p-[25px]">
+            <div class="mt-3 bg-white" style="padding: 25px; border-radius: 16px">
               ${response.data.course.lessons.map((data, iter) => {
                 return `
                   <button
-                    class="bg-secondary-2 rounded-full flex items-center justify-between gap-3 p-3 w-full mb-3 btn-can-playback ${iter == 0 ? "course-button-active" : ""}"
+                    class="bg-secondary-2 border-0 rounded-pill d-flex align-items-center justify-content-between gap-3 p-3 w-100 mb-3 btn-can-playback ${iter == 0 ? "course-button-active" : ""}"
                     onclick="playCourse(${iter}, '${decodeURI(data.lesson_link)}')"
                     id="btn-can-playback-${iter}"
                   >

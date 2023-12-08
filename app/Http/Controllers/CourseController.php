@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
+    public function index() {
+        $courses = Course::query()->orderBy("id", "desc")->get();
+        return view("course-index", compact("courses"));
+    }
+
     public function courseDetail(Request $request, $slug) {
         $course = Course::with("user", "lessons")->where("course_slug", $slug)->first();
         if (!$course) {

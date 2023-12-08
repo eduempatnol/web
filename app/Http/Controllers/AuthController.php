@@ -17,7 +17,7 @@ class AuthController extends Controller
                 return redirect()->route("admin.dashboard");
             }
             if ($user->role->role_slug == "user") {
-                return redirect()->route("user.dashboard");
+                return redirect()->route("welcome");
             }
             if ($user->role->role_slug == "instructor") {
                 return redirect()->route("instructor.dashboard");
@@ -41,7 +41,7 @@ class AuthController extends Controller
                 return redirect("/admin");
             }
             if ($user->role->role_slug == "user") {
-                return redirect("/user");
+                return redirect("/");
             }
             if ($user->role->role_slug == "instructor") {
                 return redirect("/instructor");
@@ -61,6 +61,6 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
 
-        return redirect('login');
+        return redirect("/");
     }
 }
