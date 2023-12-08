@@ -2,7 +2,7 @@
 @section("class", "active")
 
 @push("css")
-<link type="text/css" rel="stylesheet" href="{{ asset("css/page.css") }}" />
+<link type="text/css" rel="stylesheet" href="{{ asset("css/page.css?v=1.0.0") }}" />
 <link type="text/css" rel="stylesheet" href="{{ mix("css/app.css") }}" />
 @endpush
 
