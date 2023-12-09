@@ -29,6 +29,16 @@
         <div class="py-[36px] px-[31px] bg-white rounded-lg mt-3 md:mt-5">
           <span class="text-xl md:text-2xl">Sign In</span>
           <form class="mt-10" method="POST" action="{{ route("login") }}">
+            @if (Session::has("success"))
+              <div class="px-5 py-3 w-full rounded-lg text-sm bg-success text-white font-bold mb-3">
+                {{ Session::get("success") }}
+              </div>
+            @endif
+            @if (Session::has("error"))
+              <div class="px-5 py-3 w-full rounded-lg text-sm bg-red-500 text-white font-bold mb-3">
+                {{ Session::get("error") }}
+              </div>
+            @endif
             @csrf
             <div class="flex flex-col gap-1 text-black">
               <label for="email">Email</label>
