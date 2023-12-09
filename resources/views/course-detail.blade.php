@@ -78,7 +78,17 @@
           <div class="text-black text-left flex-1 text-1line">31 video lainnya</div>
         </a>
       </div>
-      <a href="/course/checkout/{{ $course->course_slug }}" class="bg-primary block h-[72px] rounded-b-[16px] text-white flex items-center justify-center outline-none text-xl">Gabung Kelas</a>
+      @if (Auth::check())
+        @if (Auth::user()->role_id != 1 && Auth::user()->role_id != 3)
+          @if ($courseCheckout)
+            <a href="/user/class" class="bg-primary block h-[72px] rounded-b-[16px] text-white flex items-center justify-center outline-none text-xl">Lihat Kelas</a>
+          @else
+            <a href="/course/checkout/{{ $course->course_slug }}" class="bg-primary block h-[72px] rounded-b-[16px] text-white flex items-center justify-center outline-none text-xl">Gabung Kelas</a>
+          @endif
+        @endif
+      @else
+        <a href="/course/checkout/{{ $course->course_slug }}" class="bg-primary block h-[72px] rounded-b-[16px] text-white flex items-center justify-center outline-none text-xl">Gabung Kelas</a>
+      @endif
     </div>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-16">
