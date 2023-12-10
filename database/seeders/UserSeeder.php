@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\InstructorWallet;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -36,6 +37,11 @@ class UserSeeder extends Seeder
         $user2->email_verified_at = Carbon::now();
         $user2->password = Hash::make("12345678");
         $user2->save();
+
+        $wallet2 = new InstructorWallet();
+        $wallet2->user_id = $user2->id;
+        $wallet2->type = "Primary";
+        $wallet2->save();
 
         // Seeder Student
         $user2 = new User();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InstructorWallet;
 use App\Models\Organization;
 use App\Models\User;
 use Carbon\Carbon;
@@ -44,10 +45,27 @@ class AuthController extends Controller
             if ($user->role->role_slug == "administrator") {
                 return redirect("/admin");
             }
+
             if ($user->role->role_slug == "user") {
                 return redirect("/");
             }
+
             if ($user->role->role_slug == "instructor") {
+                $wallet = InstructorWallet::where("user_id", $user->id)->first();
+                if (!$wallet) {
+                    $wallet1 = new InstructorWallet();
+                    $wallet1->user_id = $user->id;
+                    $wallet1->type = "Primary";
+                    $wallet1->balance = 0;
+                    $wallet1->save();
+
+                    $wallet2 = new InstructorWallet();
+                    $wallet2->user_id = $user->id;
+                    $wallet2->type = "Commission";
+                    $wallet2->balance = 0;
+                    $wallet2->save();
+                }
+
                 return redirect("/instructor");
             }
         }

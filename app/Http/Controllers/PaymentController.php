@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\CourseCheckout;
 use App\Models\CourseInvoice;
+use App\Models\InstructorWallet;
+use App\Models\WalletLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -90,6 +92,29 @@ class PaymentController extends Controller
             $payment->status = "Success";
             $payment->save();
 
+            $course = Course::find($payment->course_id);
+            if (!$course) throw new \Exception("Error, course not found");
+
+            $wallet = InstructorWallet::where("user_id", $course->user_id)->where("type", "Primary")->first();
+            if (!$wallet) throw new \Exception("Error, wallet not found");
+
+            $income = $payment->amount - ($payment->amount * 30 / 100);
+
+            $walletLog = new WalletLog();
+            $walletLog->from_table_wallet = "instructor_wallets";
+            $walletLog->from_table_wallet_id = $wallet->id;
+            $walletLog->from_table_invoice = "course_invoices";
+            $walletLog->from_table_invoice_id = $payment->id;
+            $walletLog->invoice_amount = $payment->amount;
+            $walletLog->cut_sales = "30%";
+            $walletLog->income = $income;
+            $walletLog->wallet_balance_current = $wallet->balance;
+            $walletLog->wallet_balance = $wallet->balance + $income;
+            $walletLog->remarks = "Pendapatan dari penjualan (". $course->course_title .")";
+            $walletLog->save();
+
+            $wallet->balance = $wallet->balance + $walletLog->income;
+
             $checkout = new CourseCheckout();
             $checkout->note = "Berhasil melakukan pembelian kelas";
             $checkout->user_id = $payment->user_id;
@@ -98,8 +123,7 @@ class PaymentController extends Controller
             $checkout->save();
 
             DB::commit();
-
-            return redirect()->route("user.dashboard");
+            return redirect()->route("user.class");
         } catch (\Exception $e) {
             DB::rollBack();
             return abort(403);
