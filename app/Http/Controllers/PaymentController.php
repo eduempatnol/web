@@ -114,6 +114,7 @@ class PaymentController extends Controller
             $walletLog->save();
 
             $wallet->balance = $wallet->balance + $walletLog->income;
+            $wallet->save();
 
             $checkout = new CourseCheckout();
             $checkout->note = "Berhasil melakukan pembelian kelas";
