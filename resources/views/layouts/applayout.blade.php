@@ -49,6 +49,12 @@
                   <div>Kursus</div>
                 </a>
               </li>
+              <li class="menu-item @yield("transaction")">
+                <a href="{{ route("instructor.transaction") }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-spreadsheet"></i>
+                  <div>Transaksi</div>
+                </a>
+              </li>
             @endif
             @if (Auth::user()->role->role_slug == "user")
               <li class="menu-item @yield("class")">

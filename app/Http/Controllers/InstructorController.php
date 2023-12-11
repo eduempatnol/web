@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseInvoice;
 use App\Models\Lessons;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,5 +73,16 @@ class InstructorController extends Controller
             DB::rollBack();
             return redirect()->withErrors(["message" => $e->getMessage()]);
         }
+    }
+
+    public function transaction() {
+        return view("instructor.transaction");
+    }
+
+    public function getDataTransaction(Request $request) {
+        $course = Course::where("user_id", Auth::user()->id)->pluck("id");
+        $invoices = CourseInvoice::whereIn("course_id", $course)->select("code", "name", "amount", "note", "status")->get();
+
+        return DataTables::of($invoices)->toJson();
     }
 }

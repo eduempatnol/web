@@ -54,7 +54,7 @@
         </div>`;
       }},
       {data: "course_price", searchable: true, orderable: false, render: function(data, type, row) {
-        return `Rp ${data}`;
+        return `Rp ${data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
       }},
       {data: "id", searchable: false, orderable: false, render: function(data, type, row) {
         return `<a href="/course/${row.course_slug}" class="btn btn-sm btn-info d-flex align-items-center gap-1">

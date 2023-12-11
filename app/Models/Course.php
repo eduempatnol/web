@@ -16,4 +16,8 @@ class Course extends Model
     public function lessons() {
         return $this->hasMany(Lessons::class, "course_id");
     }
+    
+    public function invoices() {
+        return $this->hasMany(CourseInvoice::class, "course_id");
+    }
 }
