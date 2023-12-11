@@ -47,7 +47,7 @@
     },
     columns: [
       {data: "code", searchable: false, orderable: false, render: function(data, type, row) {
-        return data;
+        return `<span style="white-space: nowrap">${data}</span>`;
       }},
       {data: "note", searchable: true, orderable: false, render: function(data, type, row) {
         return data.split(" | ")[1];
