@@ -20,6 +20,8 @@ Route::post("logout", [AuthController::class, "logout"])->name("logout");
 
 Route::group(["prefix" => "admin", "middleware" => ["is_admin"]], function() {
 	Route::get("", [AdminController::class, "dashboard"])->name("admin.dashboard");
+	Route::get("settings", [AdminController::class, "settings"])->name("admin.settings");
+	Route::post("change/rate", [AdminController::class, "changeRate"])->name("admin.settings.rate");
 });
 
 Route::group(["prefix" => "user", "middleware" => ["is_user"]], function() {

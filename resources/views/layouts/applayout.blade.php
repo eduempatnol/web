@@ -42,6 +42,14 @@
                 <div>Dashboard</div>
               </a>
             </li>
+            @if (Auth::user()->role->role_slug == "administrator")
+              <li class="menu-item @yield("settings")">
+                <a href="{{ route("admin.settings") }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-wrench"></i>
+                  <div>Settings</div>
+                </a>
+              </li>
+            @endif
             @if (Auth::user()->role->role_slug == "instructor")
               <li class="menu-item @yield("courses")">
                 <a href="{{ route("instructor.courses") }}" class="menu-link">

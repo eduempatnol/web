@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\CourseCheckout;
 use App\Models\CourseInvoice;
 use App\Models\InstructorWallet;
+use App\Models\SalesFee;
 use App\Models\WalletLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -98,7 +99,15 @@ class PaymentController extends Controller
             $wallet = InstructorWallet::where("user_id", $course->user_id)->where("type", "Primary")->first();
             if (!$wallet) throw new \Exception("Error, wallet not found");
 
-            $income = $payment->amount - ($payment->amount * 30 / 100);
+            $salesRate = SalesFee::where("id", 1)->first();
+            $income = 0;
+
+            if ($salesRate->type == "percentage") {
+                $income = $payment->amount - ($payment->amount * $salesRate->value / 100);
+            }
+            if ($salesRate->type == "fixed") {
+                $income = $payment->amount - ($payment->amount - $salesRate->value);
+            }
 
             $walletLog = new WalletLog();
             $walletLog->from_table_wallet = "instructor_wallets";
@@ -106,7 +115,6 @@ class PaymentController extends Controller
             $walletLog->from_table_invoice = "course_invoices";
             $walletLog->from_table_invoice_id = $payment->id;
             $walletLog->invoice_amount = $payment->amount;
-            $walletLog->cut_sales = "30%";
             $walletLog->income = $income;
             $walletLog->wallet_balance_current = $wallet->balance;
             $walletLog->wallet_balance = $wallet->balance + $income;
