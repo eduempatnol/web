@@ -55,7 +55,12 @@
           <input id="link-checkbox" type="checkbox" value="" class="w-5 h-5 text-primary bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-primary dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
           <label for="link-checkbox" class="ms-2 font-medium text-black select-none">Saya setuju dengan <a href="#" class="text-primary dark:text-blue-500 hover:underline">Terms and Conditions</a>.</label>
         </div>
-        <button type="button" id="pay" class="bg-primary w-full text-white font-bold py-4 text-lg rounded-full">Bayar & gabung kelas</button>
+        <button type="button" id="pay" class="flex items-center gap-2 justify-center bg-primary w-full text-white font-bold py-4 text-lg rounded-full disabled:opacity-0.6">
+          Bayar & gabung kelas
+          <span class="hidden" id="loading">
+            <i class="bx bx-loader-alt animate-spin" style="font-size: 24px"></i>
+          </span>
+        </button>
       </div>
     </div>
   </div>
@@ -69,6 +74,7 @@
   $("#pay").click(function (event) {
     event.preventDefault();
     $(this).prop("disabled", true);
+    $("#loading").removeClass("hidden");
 
     $.post("{{ route('payment.course') }}", {
       _method: "POST",
