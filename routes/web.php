@@ -22,6 +22,12 @@ Route::group(["prefix" => "admin", "middleware" => ["is_admin"]], function() {
 	Route::get("", [AdminController::class, "dashboard"])->name("admin.dashboard");
 	Route::get("settings", [AdminController::class, "settings"])->name("admin.settings");
 	Route::post("change/rate", [AdminController::class, "changeRate"])->name("admin.settings.rate");
+	Route::group(["prefix" => "mentoring"], function() {
+		Route::get("category", [AdminController::class, "mentoringCategory"])->name("mentoring.category");
+		Route::post("category", [AdminController::class, "storeMentoringCategory"])->name("mentoring.category.store");
+		Route::post("category/update", [AdminController::class, "updateMentoringCategory"])->name("mentoring.category.update");
+		Route::get("category/data", [AdminController::class, "mentoringCategoryData"])->name("mentoring.category.data");
+	});
 });
 
 Route::group(["prefix" => "user", "middleware" => ["is_user"]], function() {

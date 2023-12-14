@@ -43,6 +43,19 @@
               </a>
             </li>
             @if (Auth::user()->role->role_slug == "administrator")
+              <li class="menu-item @yield("mentoring")">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <i class="menu-icon tf-icons bx bx-layout"></i>
+                  <div data-i18n="Layouts">Mentoring</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item @yield("mentoring.category")">
+                    <a href="{{ route("mentoring.category") }}" class="menu-link">
+                      <div data-i18n="Without menu">Category</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
               <li class="menu-item @yield("settings")">
                 <a href="{{ route("admin.settings") }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-wrench"></i>

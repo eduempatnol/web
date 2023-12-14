@@ -9,6 +9,10 @@
   .sorting_disabled::after {
     display: none !important;
   }
+  #tables {
+    padding-top: 20px;
+    margin-bottom: 10px;
+  }
 </style>
 @endpush
 
