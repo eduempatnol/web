@@ -25,7 +25,7 @@ class RoleSeeder extends Seeder
             $nr->save();
         }
 
-        $subRoles = ["Superadmin", "Community", "School", "Organization", "Individual"];
+        $subRoles = ["Superadmin", "Community", "School", "Organization", "Individual", "Mentor"];
         foreach ($subRoles as $key => $subRole) {
             $sbr = new SubRole();
             $sbr->sub_role_name = $subRole;
