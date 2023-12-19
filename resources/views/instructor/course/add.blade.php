@@ -72,11 +72,28 @@
                 </select>
               </div>
             </div>
+            <div id="consultation_true" class="row"></div>
           </div>
           <div class="mt-4">
             <h4>PELAJARAN</h4>
             <button type="button" class="btn btn-sm btn-success" onclick="addLessons()">Tambah Pelajaran</button>
             <div class="mt-3" id="lessons-wrapper"></div>
+          </div>
+          <div class="mt-4">
+            <div class="d-flex gap-1 align-items-center">
+              <h4>E-BOOK</h4>
+              <small class="text-danger">(*Hapus baris jika tidak ada ebook)</small>
+            </div>
+            <button type="button" class="btn btn-sm btn-success" onclick="addEbooks()">Tambah E-Book</button>
+            <div class="mt-3" id="ebooks-wrapper"></div>
+          </div>
+          <div class="mt-4">
+            <div class="d-flex gap-1 align-items-center">
+              <h4>QUIS</h4>
+              <small class="text-danger">(*Hapus baris jika tidak ada quis)</small>
+            </div>
+            <button type="button" class="btn btn-sm btn-success" onclick="addQuis()">Tambah Quis</button>
+            <div class="mt-3" id="quis-wrapper"></div>
           </div>
           <div class="mt-5">
             <button class="btn btn-primary w-100" type="button" onclick="submitData(this)">Submit Kursus</button>
@@ -111,21 +128,41 @@
     numeralThousandsGroupStyle: 'thousand'
   });
 
-  // let leassons = [
-  //   {
-  //     lesson_title: "",
-  //     lesson_link: "",
-  //     lesson_duration: ""
-  //   },
-  // ];
+  $("#consultation_certificate").change(function() {
+    if ($(this).val() == 1) {
+      $("#consultation_true").append(`
+        <div class="col-md-6 col-sm-12">
+          <div class="d-flex flex-column gap-1 mb-3">
+            <label for="consultation_link">Link Konsultasi</label>
+            <input type="text" id="consultation_link" name="consultation_link" class="form-control" autocomplete="off" placeholder="https://us06web.zoom.us/j/83335090701">
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="d-flex flex-column gap-1 mb-3">
+                <label for="consultation_date">Tanggal Konsultasi</label>
+                <input type="date" id="consultation_date" name="consultation_date" class="form-control" autocomplete="off">
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="d-flex flex-column gap-1 mb-3">
+                <label for="consultation_time">Waktu Konsultasi</label>
+                <input type="time" id="consultation_time" name="consultation_time" class="form-control" autocomplete="off">
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+    } else {
+      $("#consultation_true").empty();
+    }
+  });
+
   const lessonsWrapper = document.getElementById("lessons-wrapper");
   let leassons = [];
 
-  if (lessonsWrapper) {
-    elementLesson();
-  }
-
-  function addLessons(){
+  function addLessons() {
     leassons.push({
       lesson_title: "",
       lesson_link: "",
@@ -231,6 +268,269 @@
     const selector = document.querySelector(`#lessonsWrapper-${elementId}`);
     if (selector) {
       leassons[elementId].lesson_duration = selector.querySelector(`#lesson_duration-${elementId}`).value;
+    }
+  }
+
+  const ebooksWrapper = document.getElementById("ebooks-wrapper");
+  let ebooks = [];
+
+  function addEbooks() {
+    ebooks.push({
+      ebook_title: "",
+      ebook_link: "",
+    });
+    elementEbook();
+  }
+
+  function elementEbook() {
+    ebooksWrapper.innerHTML = "";
+
+    ebooks.forEach((data, iteration) => {
+      ebooksWrapper.innerHTML += `<div class="row" id="ebooksWrapper-${iteration}">
+        <div class="col-md-4 col-sm-12">
+          <div class="d-flex flex-column gap-1 mb-3">
+            <label for="ebook_title">Judul Ebook</label>
+            <input
+              type="text"
+              name="ebook_title[]"
+              id="ebook_title-${iteration}"
+              class="form-control"
+              value="${data ? data.ebook_title : ""}"
+              autocomplete="off"
+              placeholder="Perancangan Percobaan"
+              onkeyup="changeValueTitleEbook(${iteration})"
+            />
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-12">
+          <div class="d-flex flex-column gap-1 mb-3">
+            <label for="ebook_link">Link Ebook</label>
+            <input
+              type="text"
+              name="ebook_link[]"
+              id="ebook_link-${iteration}"
+              class="form-control"
+              value="${data ? data.ebook_link : ""}"
+              autocomplete="off"
+              placeholder="https://simdos.unud.ac.id/uploads/file_pendidikan_1_dir/cc429295fa1c78b491ca20550e03dd97.pdf"
+              onkeyup="changeValueLinkEbook(${iteration})"
+            />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <div class="d-flex gap-1 mb-3 h-100 align-items-center" style="padding-top: 10px">
+            <button class="btn btn-danger" type="button" onclick="eraseEbook(${iteration})">
+              Hapus
+              <i class='bx bx-trash'></i>
+            </button>
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+
+  function eraseEbook(iteration) {
+    const selector = document.querySelector(`#ebooksWrapper-${iteration}`);
+    if (selector) {
+      ebooks.splice(iteration, 1);
+      selector.remove();
+    }
+
+    elementEbook();
+  }
+
+  function changeValueTitleEbook(elementId) {
+    const selector = document.querySelector(`#ebooksWrapper-${elementId}`);
+    if (selector) {
+      ebooks[elementId].ebook_title = selector.querySelector(`#ebook_title-${elementId}`).value;
+    }
+  }
+
+  function changeValueLinkEbook(elementId) {
+    const selector = document.querySelector(`#ebooksWrapper-${elementId}`);
+    if (selector) {
+      ebooks[elementId].ebook_link = selector.querySelector(`#ebook_link-${elementId}`).value;
+    }
+  }
+
+  const quisWrapper = document.getElementById("quis-wrapper");
+  let quis = [];
+
+  function addQuis() {
+    quis.push({
+      question: "",
+      type: "",
+      a: "",
+      b: "",
+      c: "",
+      d: "",
+      answer: "",
+    });
+    elementQuis();
+  }
+
+  function elementQuis() {
+    quisWrapper.innerHTML = "";
+
+    quis.forEach((data, iteration) => {
+      quisWrapper.innerHTML += `<div class="row" id="quisWrapper-${iteration}">
+        <div class="col-md-8 col-sm-12">
+          <div class="d-flex flex-column gap-1 mb-3">
+            <label for="question">Pertanyaan</label>
+            <input
+              type="text"
+              name="question[]"
+              id="question-${iteration}"
+              class="form-control"
+              value="${data ? data.question : ""}"
+              autocomplete="off"
+              placeholder="eg: Siapa nama kamu?"
+              onkeyup="changeQuisQuestion(${iteration})"
+            />
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="d-flex flex-column gap-1 mb-3">
+            <label for="type">Tipe</label>
+            <select
+              name="type[]"
+              class="form-control"
+              value="${data ? data.type : ""}"
+              id="type-${iteration}"
+              onchange="changeQuisType(${iteration})"
+            >
+              <option value="" selected>Pilih Tipe</option>
+              <option value="choice">Pilihan Ganda</option>
+              <option value="essays">Jawaban Esay</option>
+            </select>
+          </div>
+        </div>
+        <div id="wrapperType-${iteration}" class="row"></div>
+      </div>`;
+    });
+  }
+
+  function changeQuisQuestion(elementId) {
+    const selector = document.querySelector(`#quisWrapper-${elementId}`);
+    if (selector) {
+      quis[elementId].question = selector.querySelector(`#question-${elementId}`).value;
+    }
+  }
+
+  function changeQuisType(elementId) {
+    const selector = document.querySelector(`#quisWrapper-${elementId}`);
+    if (selector) {
+      quis[elementId].type = selector.querySelector(`#type-${elementId}`).value;
+    }
+
+    const selectorType = document.querySelector(`#wrapperType-${elementId}`);
+    if (selectorType) {
+      if (quis[elementId].type == "choice") {
+        selectorType.innerHTML = `
+          <div class="col-md-3 col-sm-6">
+            <div class="d-flex flex-column gap-1 mb-3">
+              <label for="a">A.</label>
+              <input
+                type="text"
+                name="a[]"
+                id="a-${elementId}"
+                class="form-control"
+                value="${quis[elementId].a ? quis[elementId].a : ""}"
+                autocomplete="off"
+                placeholder="eg: Apel"
+                onkeyup="changeQuisAnswerA(${elementId})"
+              />
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="d-flex flex-column gap-1 mb-3">
+              <label for="b">B.</label>
+              <input
+                type="text"
+                name="b[]"
+                id="b-${elementId}"
+                class="form-control"
+                value="${quis[elementId].b ? quis[elementId].b : ""}"
+                autocomplete="off"
+                placeholder="eg: Jeruk"
+                onkeyup="changeQuisAnswerB(${elementId})"
+              />
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="d-flex flex-column gap-1 mb-3">
+              <label for="c">C.</label>
+              <input
+                type="text"
+                name="c[]"
+                id="c-${elementId}"
+                class="form-control"
+                value="${quis[elementId].c ? quis[elementId].c : ""}"
+                autocomplete="off"
+                placeholder="eg: Mangga"
+                onkeyup="changeQuisAnswerC(${elementId})"
+              />
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="d-flex flex-column gap-1 mb-3">
+              <label for="d">D.</label>
+              <input
+                type="text"
+                name="d[]"
+                id="d-${elementId}"
+                class="form-control"
+                value="${quis[elementId].d ? quis[elementId].d : ""}"
+                autocomplete="off"
+                placeholder="eg: Pepaya"
+                onkeyup="changeQuisAnswerD(${elementId})"
+              />
+            </div>
+          </div>
+        `;
+      }
+      else if (quis[elementId].type == "essays") {
+        selectorType.innerHTML = "";
+        quis[elementId].a = "";
+        quis[elementId].b = "";
+        quis[elementId].c = "";
+        quis[elementId].d = "";
+      }
+      else {
+        selectorType.innerHTML = "";
+        quis[elementId].a = "";
+        quis[elementId].b = "";
+        quis[elementId].c = "";
+        quis[elementId].d = "";
+      }
+    }
+  }
+
+  function changeQuisAnswerA(elementId) {
+    const selector = document.querySelector(`#wrapperType-${elementId}`);
+    if (selector) {
+      quis[elementId].a = selector.querySelector(`#a-${elementId}`).value;
+    }
+  }
+
+  function changeQuisAnswerB(elementId) {
+    const selector = document.querySelector(`#wrapperType-${elementId}`);
+    if (selector) {
+      quis[elementId].b = selector.querySelector(`#b-${elementId}`).value;
+    }
+  }
+
+  function changeQuisAnswerC(elementId) {
+    const selector = document.querySelector(`#wrapperType-${elementId}`);
+    if (selector) {
+      quis[elementId].c = selector.querySelector(`#c-${elementId}`).value;
+    }
+  }
+
+  function changeQuisAnswerD(elementId) {
+    const selector = document.querySelector(`#wrapperType-${elementId}`);
+    if (selector) {
+      quis[elementId].d = selector.querySelector(`#d-${elementId}`).value;
     }
   }
 

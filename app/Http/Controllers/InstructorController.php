@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\CourseInvoice;
+use App\Models\Ebook;
 use App\Models\Lessons;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +57,16 @@ class InstructorController extends Controller
             $course->course_slug = Str::slug($request->course_title, "-");
             $course->save();
 
+            if ($request->consultation_certificate == 1) {
+                if (!$request->consultation_link || !$request->consultation_date || !$request->consultation_time) {
+                    throw new \Exception("Error, link konsultasi dan waktu konsultasi harus di isi");
+                }
+
+                $course->consultation_link = $request->consultation_link;
+                $course->consultation_date = $request->consultation_date ." ". $request->consultation_time;
+                $course->save();
+            }
+
             if ($request->lesson_title) {
                 foreach ($request->lesson_title as $key => $lessonTitle) {
                     $lesson = new Lessons();
@@ -64,6 +76,30 @@ class InstructorController extends Controller
                     $lesson->lesson_duration = $request->lesson_duration[$key];
                     $lesson->lesson_sorting = $key + 1;
                     $lesson->save();
+                }
+            }
+
+            if ($request->ebook_title) {
+                foreach ($request->ebook_title as $key => $ebookTitle) {
+                    $ebook = new Ebook();
+                    $ebook->course_id = $course->id;
+                    $ebook->ebook_title = $ebookTitle;
+                    $ebook->ebook_link = $request->ebook_link[$key];
+                    $ebook->save();
+                }
+            }
+
+            if ($request->question) {
+                foreach ($request->question as $key => $question) {
+                    $quiz = new Quiz();
+                    $quiz->course_id = $course->id;
+                    $quiz->question = $question;
+                    $quiz->type = $request->type[$key];
+                    $quiz->a = empty($request->a[$key]) ? null : $request->a[$key];
+                    $quiz->b = empty($request->b[$key]) ? null : $request->b[$key];
+                    $quiz->c = empty($request->c[$key]) ? null : $request->c[$key];
+                    $quiz->d = empty($request->d[$key]) ? null : $request->d[$key];
+                    $quiz->save();
                 }
             }
 

@@ -59,8 +59,25 @@
       <div class="wrapper-course-detail" id="course-video-playback">
         <iframe src="{{ str_replace("watch?v=", "v/", $course->lessons[0]->lesson_link) }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
+      <div class="mt-16 flex flex-col gap-4 leading-7 text-black pr-0 md:pr-20">
+        <h3 class="font-bold text-2xl">Develop Your Skills</h3>
+        {!! $course->course_description !!}
+      </div>
     </div>
     <div class="col-span-1">
+      @if (count($course->ebooks) > 0)
+        <div class="rounded-[16px] bg-white p-[25px] mb-4">
+          <h3 class="text-xl font-semibold mb-3">EBook</h3>
+          @foreach ($course->ebooks as $ebook)
+            <div class="mt-2">
+              <a href="{{ $ebook->ebook_link }}" target="_blank" class="hover:text-primary">
+                <i class='bx bxs-book-content'></i>
+                <span class="text-sm">{{ $ebook->ebook_title }}</span>
+              </a>
+            </div>
+          @endforeach
+        </div>
+      @endif
       <div class="rounded-t-[16px] bg-white p-[25px]">
         @foreach ($course->lessons as $key => $lesson)
           <button
@@ -75,7 +92,7 @@
         @endforeach
         <a href="/course/checkout/{{ $course->course_slug }}" class="bg-secondary rounded-full flex items-center justify-between gap-3 p-3 w-full">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" style="fill: #34364a;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path></svg>
-          <div class="text-black text-left flex-1 text-1line">31 video lainnya</div>
+          <div class="text-black text-left flex-1 text-1line">{{ $countLessons - 4 }} video lainnya</div>
         </a>
       </div>
       @if (Auth::check())
@@ -92,10 +109,10 @@
     </div>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-16">
-    <div class="col-span-2 flex flex-col gap-4 leading-7 text-black pr-0 md:pr-20">
+    {{-- <div class="col-span-2 flex flex-col gap-4 leading-7 text-black pr-0 md:pr-20">
       <h3 class="font-bold text-2xl">Develop Your Skills</h3>
       {!! $course->course_description !!}
-    </div>
+    </div> --}}
   </div>
 </div>
 @endsection
