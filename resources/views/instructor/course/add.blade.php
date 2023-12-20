@@ -42,6 +42,8 @@
               <div class="d-flex flex-column gap-1 mb-3">
                 <label for="course_thumbnail">Thumbnail</label>
                 <input type="file" class="form-control" name="course_thumbnail" id="course_thumbnail">
+                <small class="text-info">Rekomendasi ukuran 593x385 (Landscape)</small>
+                <img id="image" src="" class="image-fluid mt-2 rounded" />
               </div>
             </div>
           </div>
@@ -126,6 +128,20 @@
   const iPrice = new Cleave('#course_price', {
     numeral: true,
     numeralThousandsGroupStyle: 'thousand'
+  });
+
+  $("#course_thumbnail").change(function() {
+    const preview = document.querySelector("#image");
+    const file = $(this).get(0).files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener("load", () => {
+      preview.src = reader.result;
+    }, false);
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   });
 
   $("#consultation_certificate").change(function() {

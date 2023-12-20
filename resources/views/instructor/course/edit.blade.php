@@ -59,7 +59,8 @@
               <div class="d-flex flex-column gap-1 mb-3">
                 <label for="course_thumbnail">Thumbnail</label>
                 <input type="file" class="form-control" name="course_thumbnail" id="course_thumbnail">
-                <img id="image" src="{{ asset($course->course_thumbnail) }}" class="image-fluid mt-3 rounded" />
+                <small class="text-info">Rekomendasi ukuran 593x385 (Landscape)</small>
+                <img id="image" src="{{ asset($course->course_thumbnail) }}" class="image-fluid mt-2 rounded" />
               </div>
             </div>
           </div>
