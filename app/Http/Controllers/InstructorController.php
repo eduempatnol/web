@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class InstructorController extends Controller
 {
@@ -25,6 +26,12 @@ class InstructorController extends Controller
 
     public function courseAdd() {
         return view("instructor.course.add");
+    }
+
+    public function courseEdit(Request $request, $id) {
+        $course = Course::with("lessons", "ebooks", "quis")->where("id", $id)->first();
+
+        return view("instructor.course.edit", compact("course"));
     }
 
     public function courseData(Request $request) {
@@ -108,6 +115,101 @@ class InstructorController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->withErrors(["message" => $e->getMessage()]);
+        }
+    }
+
+    public function courseUpdate(Request $request, $id) {
+        try {
+            DB::beginTransaction();
+
+            $course = Course::with("lessons", "ebooks", "quis")->where("id", $id)->first();
+
+            if (!$course) throw new \Exception("Error, course not found!");
+
+            if ($request->hasFile("course_thumbnail")) {
+                File::delete($course->course_thumbnail);
+
+                $file = $request->file("course_thumbnail");
+                $extension = $file->getClientOriginalExtension();
+                $filenameSave = time() . "_" . rand(100, 9999) . "." . $extension;
+                $file->move("uploads", $filenameSave);
+
+                $course->course_thumbnail = "uploads/" . $filenameSave;
+            }
+
+            $course->user_id = Auth::user()->id;
+            $course->course_title = $request->course_title;
+            $course->course_tagline = $request->course_tagline;
+            $course->course_description = $request->course_description;
+            $course->course_price = implode("", explode(",", $request->course_price));
+            $course->course_certificate = $request->course_certificate;
+            $course->consultation_certificate = $request->consultation_certificate;
+            $course->course_slug = Str::slug($request->course_title, "-");
+            $course->save();
+
+            if ($request->consultation_certificate == 1) {
+                if (!$request->consultation_link || !$request->consultation_date || !$request->consultation_time) {
+                    throw new \Exception("Error, link konsultasi dan waktu konsultasi harus di isi");
+                }
+
+                $course->consultation_link = $request->consultation_link;
+                $course->consultation_date = $request->consultation_date ." ". $request->consultation_time;
+                $course->save();
+            }
+
+            if ($request->lesson_title) {
+                $lessons = $course->lessons->pluck("id");
+                Lessons::whereIn("id", $lessons)->delete();
+
+                foreach ($request->lesson_title as $key => $lessonTitle) {
+                    $lesson = new Lessons();
+                    $lesson->id = $lessons[$key];
+                    $lesson->course_id = $course->id;
+                    $lesson->lesson_title = $lessonTitle;
+                    $lesson->lesson_link = $request->lesson_link[$key];
+                    $lesson->lesson_duration = $request->lesson_duration[$key];
+                    $lesson->lesson_sorting = $key + 1;
+                    $lesson->save();
+                }
+            }
+
+            if ($request->ebook_title) {
+                $ebooks = $course->ebooks->pluck("id");
+                Ebook::whereIn("id", $ebooks)->delete();
+
+                foreach ($request->ebook_title as $key => $ebookTitle) {
+                    $ebook = new Ebook();
+                    $ebook->id = $ebooks[$key];
+                    $ebook->course_id = $course->id;
+                    $ebook->ebook_title = $ebookTitle;
+                    $ebook->ebook_link = $request->ebook_link[$key];
+                    $ebook->save();
+                }
+            }
+
+            if ($request->question) {
+                $quis = $course->quis->pluck("id");
+                Quiz::whereIn("id", $quis)->delete();
+
+                foreach ($request->question as $key => $question) {
+                    $quiz = new Quiz();
+                    $quiz->id = $quis[$key];
+                    $quiz->course_id = $course->id;
+                    $quiz->question = $question;
+                    $quiz->type = $request->type[$key];
+                    $quiz->a = empty($request->a[$key]) ? null : $request->a[$key];
+                    $quiz->b = empty($request->b[$key]) ? null : $request->b[$key];
+                    $quiz->c = empty($request->c[$key]) ? null : $request->c[$key];
+                    $quiz->d = empty($request->d[$key]) ? null : $request->d[$key];
+                    $quiz->save();
+                }
+            }
+
+            DB::commit();
+            return redirect()->route("instructor.courses");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(["message" => $e->getMessage()]);
         }
     }
 

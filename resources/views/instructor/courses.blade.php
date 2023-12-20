@@ -61,10 +61,16 @@
         return `Rp ${data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
       }},
       {data: "id", searchable: false, orderable: false, render: function(data, type, row) {
-        return `<a href="/course/${row.course_slug}" class="btn btn-sm btn-info d-flex align-items-center gap-1">
-          <i class='bx bx-paper-plane'></i>
-          <span class="fw-bold" style="margin-top: 1px">LIHAT</span>
-        </a>`;
+        return `<div>
+          <a href="/course/${row.course_slug}" class="btn btn-sm btn-info d-flex align-items-center gap-1">
+            <i class='bx bx-paper-plane'></i>
+            <span class="fw-bold" style="margin-top: 1px">LIHAT</span>
+          </a>
+          <a href="/instructor/courses/edit/${data}" class="mt-1 btn btn-sm btn-success d-flex align-items-center gap-1">
+            <i class='bx bx-edit-alt'></i>
+            <span class="fw-bold" style="margin-top: 1px">EDIT</span>
+          </a>
+        </div>`;
       }}
     ]
   });

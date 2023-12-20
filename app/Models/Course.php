@@ -21,6 +21,10 @@ class Course extends Model
         return $this->hasMany(Ebook::class, "course_id");
     }
 
+    public function quis() {
+        return $this->hasMany(Quiz::class, "course_id");
+    }
+
     public function invoices() {
         return $this->hasMany(CourseInvoice::class, "course_id");
     }

@@ -41,7 +41,9 @@ Route::group(["prefix" => "instructor", "middleware" => ["is_instructor"]], func
 	Route::get("courses", [InstructorController::class, "courses"])->name("instructor.courses");
 	Route::get("courses/data", [InstructorController::class, "courseData"])->name("instructor.courses.data");
 	Route::get("courses/add", [InstructorController::class, "courseAdd"])->name("instructor.course.add");
+	Route::get("courses/edit/{id}", [InstructorController::class, "courseEdit"])->name("instructor.course.edit");
 	Route::post("courses/submit", [InstructorController::class, "courseSubmit"])->name("instructor.course.submit");
+	Route::put("courses/update/{id}", [InstructorController::class, "courseUpdate"])->name("instructor.course.update");
 	Route::get("course/transaction", [InstructorController::class, "transaction"])->name("instructor.transaction");
 	Route::get("course/transaction/data", [InstructorController::class, "getDataTransaction"])->name("instructor.transaction.data");
 });
