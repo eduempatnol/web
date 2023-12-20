@@ -490,18 +490,20 @@
         `;
       }
       else if (quis[elementId].type == "essays") {
-        selectorType.innerHTML = "";
-        quis[elementId].a = "";
-        quis[elementId].b = "";
-        quis[elementId].c = "";
-        quis[elementId].d = "";
+        selectorType.innerHTML = `
+          <input type="hidden" type="text" name="a[]" />
+          <input type="hidden" type="text" name="b[]" />
+          <input type="hidden" type="text" name="c[]" />
+          <input type="hidden" type="text" name="d[]" />
+        `;
       }
       else {
-        selectorType.innerHTML = "";
-        quis[elementId].a = "";
-        quis[elementId].b = "";
-        quis[elementId].c = "";
-        quis[elementId].d = "";
+        selectorType.innerHTML = `
+          <input type="hidden" type="text" name="a[]" />
+          <input type="hidden" type="text" name="b[]" />
+          <input type="hidden" type="text" name="c[]" />
+          <input type="hidden" type="text" name="d[]" />
+        `;
       }
     }
   }
