@@ -159,11 +159,15 @@ class InstructorController extends Controller
 
             if ($request->lesson_title) {
                 $lessons = $course->lessons->pluck("id");
-                Lessons::whereIn("id", $lessons)->delete();
+                if (count($lessons) > 0) {
+                    Lessons::whereIn("id", $lessons)->delete();
+                }
 
                 foreach ($request->lesson_title as $key => $lessonTitle) {
                     $lesson = new Lessons();
-                    $lesson->id = $lessons[$key];
+                    if (count($lessons) > 0) {
+                        $lesson->id = $lessons[$key];
+                    }
                     $lesson->course_id = $course->id;
                     $lesson->lesson_title = $lessonTitle;
                     $lesson->lesson_link = $request->lesson_link[$key];
@@ -175,11 +179,15 @@ class InstructorController extends Controller
 
             if ($request->ebook_title) {
                 $ebooks = $course->ebooks->pluck("id");
-                Ebook::whereIn("id", $ebooks)->delete();
+                if (count($ebooks) > 0) {
+                    Ebook::whereIn("id", $ebooks)->delete();
+                }
 
                 foreach ($request->ebook_title as $key => $ebookTitle) {
                     $ebook = new Ebook();
-                    $ebook->id = $ebooks[$key];
+                    if (count($ebooks) > 0) {
+                        $ebook->id = $ebooks[$key];
+                    }
                     $ebook->course_id = $course->id;
                     $ebook->ebook_title = $ebookTitle;
                     $ebook->ebook_link = $request->ebook_link[$key];
@@ -189,11 +197,15 @@ class InstructorController extends Controller
 
             if ($request->question) {
                 $quis = $course->quis->pluck("id");
-                Quiz::whereIn("id", $quis)->delete();
+                if (count($quis) > 0) {
+                    Quiz::whereIn("id", $quis)->delete();
+                }
 
                 foreach ($request->question as $key => $question) {
                     $quiz = new Quiz();
-                    $quiz->id = $quis[$key];
+                    if (count($quis) > 0) {
+                        $quiz->id = $quis[$key];
+                    }
                     $quiz->course_id = $course->id;
                     $quiz->question = $question;
                     $quiz->type = $request->type[$key];

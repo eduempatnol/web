@@ -152,10 +152,10 @@
             <h4>PELAJARAN</h4>
             <button type="button" class="btn btn-sm btn-success" onclick="addLessons()">Tambah Pelajaran</button>
             <div class="mt-3" id="lessons-wrapper">
+              <script>
+                let leassons = [];
+              </script>
               @if (count($course->lessons) > 0)
-                <script>
-                  let leassons = [];
-                </script>
                 @foreach ($course->lessons as $key => $lesson)
                   <script>
                     leassons.push({
@@ -230,10 +230,10 @@
             </div>
             <button type="button" class="btn btn-sm btn-success" onclick="addEbooks()">Tambah E-Book</button>
             <div class="mt-3" id="ebooks-wrapper">
+              <script>
+                let ebooks = [];
+              </script>
               @if (count($course->ebooks) > 0)
-                <script>
-                  let ebooks = [];
-                </script>
                 @foreach ($course->ebooks as $kbook => $ebook)
                   <script>
                     ebooks.push({
@@ -292,10 +292,10 @@
             </div>
             <button type="button" class="btn btn-sm btn-success" onclick="addQuis()">Tambah Quis</button>
             <div class="mt-3" id="quis-wrapper">
+              <script>
+                let quis = [];
+              </script>
               @if (count($course->quis) > 0)
-                <script>
-                  let quis = [];
-                </script>
                 @foreach ($course->quis as $kquis => $quis)
                   <script>
                     quis.push({
