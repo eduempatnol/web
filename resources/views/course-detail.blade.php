@@ -70,7 +70,7 @@
           <h3 class="text-xl font-semibold mb-3">EBook</h3>
           @foreach ($course->ebooks as $ebook)
             <div class="mt-2">
-              <a href="{{ $ebook->ebook_link }}" target="_blank" class="hover:text-primary">
+              <a href="{{ route("ebook.see", [$course->course_slug, $ebook->id]) }}" class="hover:text-primary">
                 <i class='bx bxs-book-content'></i>
                 <span class="text-sm">{{ $ebook->ebook_title }}</span>
               </a>
