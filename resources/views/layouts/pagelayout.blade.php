@@ -52,7 +52,8 @@
         <div class="flex items-center gap-10">
           <a href="/">Flash Sale</a>
           <a href="/course">Kelas</a>
-          <a href="/">Alur Belajar</a>
+          {{-- <a href="/">Alur Belajar</a> --}}
+          <a href="/forum">Forum</a>
           <a href="/">Challange</a>
         </div>
         <div class="flex {{ Auth::check() ? "gap-6" : "gap-3" }} items-center">

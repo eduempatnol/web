@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EbookController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
@@ -57,4 +59,12 @@ Route::group(["prefix" => "course"], function() {
 Route::group(["prefix" => "payment", "middleware" => "auth"], function() {
 	Route::post("course", [PaymentController::class, "payCourse"])->name("payment.course");
 	Route::get("finish", [PaymentController::class, "finishPayment"])->name("payment.finish");
+});
+
+Route::group(["prefix" => "forum"], function() {
+	Route::get("", [ForumController::class, "index"]);
+});
+
+Route::group(["prefix" => "ebook"], function() {
+	Route::get("{slug}/{ebookId}", [EbookController::class, "getEbook"]);
 });
