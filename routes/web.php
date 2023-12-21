@@ -65,6 +65,6 @@ Route::group(["prefix" => "forum"], function() {
 	Route::get("", [ForumController::class, "index"]);
 });
 
-Route::group(["prefix" => "ebook"], function() {
+Route::group(["prefix" => "ebook", "middleware" => ["auth"]], function() {
 	Route::get("{slug}/{ebookId}", [EbookController::class, "getEbook"]);
 });
