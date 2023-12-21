@@ -21,6 +21,31 @@
                   <span class="fw-bold">{{ $myCourse->course->course_title }}</span>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-sm-12 mt-2">
+                  <a href="#" class="btn btn-primary w-100">Forum</a>
+                </div>
+                @if (count($myCourse->course->ebooks) > 1)
+                  <div class="col-sm-12 mt-2">
+                    <div class="dropdown">
+                      <a class="btn btn-primary w-100 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        E-Book <small>({{ count($myCourse->course->ebooks) }})</small>
+                      </a>
+                      <ul class="dropdown-menu w-100">
+                        @foreach ($myCourse->course->ebooks as $ebook)
+                          <li class="">
+                            <a class="dropdown-item" href="{{ route("ebook.see", [$myCourse->course->course_slug, $ebook->id]) }}">
+                              <div class="text-1line">
+                                {{ $ebook->ebook_title }}
+                              </div>
+                            </a>
+                          </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  </div>
+                @endif
+              </div>
             </div>
           @endforeach
         </div>

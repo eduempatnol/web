@@ -13,7 +13,7 @@ class UserController extends Controller
     }
 
     public function class() {
-        $courseCheckout = CourseCheckout::with("course")->where("user_id", Auth::user()->id)->get();
+        $courseCheckout = CourseCheckout::with("course.lessons", "course.ebooks", "course.quis")->where("user_id", Auth::user()->id)->get();
         return view("user.class", compact("courseCheckout"));
     }
 
