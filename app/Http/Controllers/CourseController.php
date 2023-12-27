@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
-    public function index() {
-        $courses = Course::query()->orderBy("id", "desc")->get();
-        return view("course-index", compact("courses"));
+    public function index(Request $request) {
+        $inputSearch = $request->q;
+        $courses = Course::query()->orderBy("id", "desc")->where("course_title", "like", "%". $inputSearch ."%")->get();
+
+        return view("course-index", compact("courses", "inputSearch"));
     }
 
     public function courseDetail(Request $request, $slug) {

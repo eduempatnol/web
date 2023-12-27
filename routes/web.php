@@ -5,14 +5,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EbookController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-	return view('welcome');
-})->name("welcome");
+Route::get('/', [HomeController::class, "home"])->name("welcome");
 
 Route::get("login", [AuthController::class, "login"])->name("login");
 Route::post("login", [AuthController::class, "loginPost"])->name("login.post");
@@ -62,7 +61,7 @@ Route::group(["prefix" => "payment", "middleware" => "auth"], function() {
 });
 
 Route::group(["prefix" => "forum"], function() {
-	Route::get("", [ForumController::class, "index"]);
+	Route::get("{courseSlug}", [ForumController::class, "courseForum"]);
 });
 
 Route::group(["prefix" => "ebook", "middleware" => ["auth"]], function() {

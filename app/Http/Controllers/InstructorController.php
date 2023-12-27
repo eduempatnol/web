@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\CourseInvoice;
 use App\Models\Ebook;
+use App\Models\Forum;
 use App\Models\Lessons;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
@@ -109,6 +110,13 @@ class InstructorController extends Controller
                     $quiz->save();
                 }
             }
+
+            $forum = new Forum();
+            $forum->course_id = $course->id;
+            $forum->forum_admin = $course->user_id;
+            $forum->forum_title = $course->course_title;
+            $forum->forum_description = $course->course_description;
+            $forum->save();
 
             DB::commit();
             return redirect()->route("instructor.courses");

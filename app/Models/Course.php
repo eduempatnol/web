@@ -28,4 +28,8 @@ class Course extends Model
     public function invoices() {
         return $this->hasMany(CourseInvoice::class, "course_id");
     }
+
+    public function forum() {
+        return $this->hasOne(Forum::class, "course_id");
+    }
 }
