@@ -81,8 +81,8 @@
                   <div>Transaksi Kelas</div>
                 </a>
               </li>
-              <li class="menu-item @yield("transaction")">
-                <a href="{{ route("instructor.transaction") }}" class="menu-link">
+              <li class="menu-item @yield("transaction.mentoring")">
+                <a href="{{ route("instructor.transaction.mentoring") }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-spreadsheet"></i>
                   <div>Transaksi Mentoring</div>
                 </a>

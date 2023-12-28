@@ -7,6 +7,7 @@ use App\Models\CourseInvoice;
 use App\Models\Ebook;
 use App\Models\Forum;
 use App\Models\Lessons;
+use App\Models\MentoringInvoice;
 use App\Models\Quiz;
 use App\Models\ScheduleMentoring;
 use Carbon\Carbon;
@@ -247,5 +248,13 @@ class InstructorController extends Controller
         return DataTables::of($invoices)->toJson();
     }
 
-    public function sotreInstuctorMentoring() {}
+    public function transactionMentoring() {
+        return view("instructor.transaction-mentoring");
+    }
+
+    public function getDataTransactionMentoring(Request $request) {
+        $invoices = MentoringInvoice::where("id", Auth::user()->id)->get();
+
+        return DataTables::of($invoices)->toJson();
+    }
 }
