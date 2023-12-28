@@ -4,6 +4,44 @@
 @section("content")
 <div class="row">
   <div class="col-sm-12 mb-4 order-0">
+    @if (count($schedule) > 0)
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <span class="fw-bold">Kamu berhak mengikutin program mentorship, dan jadilah mentor sekarang!</span>
+        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mentorship">Become a mentorship</button>
+        <div class="modal fade" id="mentorship" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Daftar Program Mentorship</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="{{ route("payment.mentoring") }}" method="POST">
+                  @csrf
+                  <div class="d-flex flex-column gap-1 mb-3">
+                    <div class="col-sm-12">
+                      <div class="d-flex flex-column gap-1 mb-3">
+                        <label for="ketersediaan">Ketersediaan Program</label>
+                        <select name="ketersediaan" id="ketersediaan" class="form-control">
+                          @foreach ($schedule as $sche)
+                            <option value="{{ $sche->id }}">
+                              <span class="fw-bold">{{ $sche->schedule_from }} / {{ $sche->schedule_to }}</span>
+                              <span>|</span>
+                              <span>{{ ucfirst($sche->schedule_type) }}</span>
+                            </option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endif
     <div class="card">
       <div class="d-flex align-items-end row">
         <div class="col-sm-7">

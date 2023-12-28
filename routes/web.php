@@ -28,6 +28,9 @@ Route::group(["prefix" => "admin", "middleware" => ["is_admin"]], function() {
 		Route::post("category", [AdminController::class, "storeMentoringCategory"])->name("mentoring.category.store");
 		Route::post("category/update", [AdminController::class, "updateMentoringCategory"])->name("mentoring.category.update");
 		Route::get("category/data", [AdminController::class, "mentoringCategoryData"])->name("mentoring.category.data");
+		Route::get("schedule", [AdminController::class, "mentoringSchedule"])->name("mentoring.schedule");
+		Route::post("schedule", [AdminController::class, "storeMentoringSchedule"])->name("mentoring.schedule.store");
+		Route::get("schedule/data", [AdminController::class, "mentoringScheduleData"])->name("mentoring.schedule.data");
 	});
 });
 
@@ -47,6 +50,7 @@ Route::group(["prefix" => "instructor", "middleware" => ["is_instructor"]], func
 	Route::put("courses/update/{id}", [InstructorController::class, "courseUpdate"])->name("instructor.course.update");
 	Route::get("course/transaction", [InstructorController::class, "transaction"])->name("instructor.transaction");
 	Route::get("course/transaction/data", [InstructorController::class, "getDataTransaction"])->name("instructor.transaction.data");
+	// Route::post("mentoring/store", [InstructorController::class, "sotreInstuctorMentoring"])->name("instructor.mentoring.store");
 });
 
 Route::group(["prefix" => "course"], function() {
@@ -58,6 +62,7 @@ Route::group(["prefix" => "course"], function() {
 Route::group(["prefix" => "payment", "middleware" => "auth"], function() {
 	Route::post("course", [PaymentController::class, "payCourse"])->name("payment.course");
 	Route::get("finish", [PaymentController::class, "finishPayment"])->name("payment.finish");
+	Route::post("mentoring", [PaymentController::class, "payMentoring"])->name("payment.mentoring");
 });
 
 Route::group(["prefix" => "forum"], function() {

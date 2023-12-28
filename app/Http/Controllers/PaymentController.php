@@ -6,7 +6,10 @@ use App\Models\Course;
 use App\Models\CourseCheckout;
 use App\Models\CourseInvoice;
 use App\Models\InstructorWallet;
+use App\Models\MentoringCheckout;
+use App\Models\MentoringInvoice;
 use App\Models\SalesFee;
+use App\Models\ScheduleMentoring;
 use App\Models\WalletLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -136,6 +139,67 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return abort(403);
+        }
+    }
+
+    public function payMentoring(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $schedule = ScheduleMentoring::where("id", $request->mentoring_id)->first();
+            if (!$schedule) {
+                throw new \Exception("Error, schedule not found!");
+            }
+
+            $mentoringCheckout = new MentoringCheckout();
+            $mentoringCheckout->user_id = Auth::user()->id;
+            $mentoringCheckout->schedule_id = $schedule->id;
+            $mentoringCheckout->amount = 59999;
+            $mentoringCheckout->save();
+            
+            $mentoringInvoice = new MentoringInvoice();
+            $mentoringCheckout->user_id = Auth::user()->id;
+            $mentoringCheckout->mentoring_checkout_id = $mentoringCheckout->id;
+            $mentoringInvoice->code = "EMTRG-". time() . rand(10, 998);
+            $mentoringInvoice->name = Auth::user()->name;
+            $mentoringInvoice->email = Auth::user()->email;
+            $mentoringInvoice->amount = $mentoringCheckout->amount;
+            $mentoringInvoice->note = "Pendaftaran Program Mentoring Edukasi 4.0 | ". Carbon::now();
+            $mentoringInvoice->save();
+
+            $payload = [
+                "transaction_details" => [
+                    "order_id"     => $mentoringInvoice->code,
+                    "gross_amount" => $mentoringInvoice->amount,
+                ],
+                "customer_details" => [
+                    "first_name" => $mentoringInvoice->name,
+                    "email"      => $mentoringInvoice->email,
+                ],
+                "item_details" => [
+                    [
+                        "id"            => $mentoringInvoice->code,
+                        "price"         => $mentoringInvoice->amount,
+                        "quantity"      => 1,
+                        "name"          => "Pendaftaran Program Mentoring Edukasi 4.0 | ". Carbon::now(),
+                        "brand"         => "Edukasi",
+                        "category"      => "Program Mentoring",
+                        "merchant_name" => "Edukasi 4.0",
+                    ],
+                ],
+            ];
+            $snapToken = MidtransSnap::getSnapToken($payload);
+            $snapUrl = MidtransSnap::getSnapUrl($payload);
+
+            $mentoringCheckout->snap_token = $snapToken;
+            $mentoringCheckout->snap_url = $snapUrl;
+            $mentoringCheckout->save();
+
+            DB::commit();
+            return redirect("/instructor/course/transaction");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(["message" => $e->getMessage()], 400);
         }
     }
 }

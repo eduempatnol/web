@@ -49,9 +49,14 @@
                   <div data-i18n="Layouts">Mentoring</div>
                 </a>
                 <ul class="menu-sub">
-                  <li class="menu-item @yield("mentoring.category")">
+                  {{-- <li class="menu-item @yield("mentoring.category")">
                     <a href="{{ route("mentoring.category") }}" class="menu-link">
                       <div data-i18n="Without menu">Category</div>
+                    </a>
+                  </li> --}}
+                  <li class="menu-item @yield("mentoring.schedule")">
+                    <a href="{{ route("mentoring.schedule") }}" class="menu-link">
+                      <div data-i18n="Without menu">Jadwal Mentoring</div>
                     </a>
                   </li>
                 </ul>
@@ -73,7 +78,13 @@
               <li class="menu-item @yield("transaction")">
                 <a href="{{ route("instructor.transaction") }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-spreadsheet"></i>
-                  <div>Transaksi</div>
+                  <div>Transaksi Kelas</div>
+                </a>
+              </li>
+              <li class="menu-item @yield("transaction")">
+                <a href="{{ route("instructor.transaction") }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-spreadsheet"></i>
+                  <div>Transaksi Mentoring</div>
                 </a>
               </li>
             @endif

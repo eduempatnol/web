@@ -6,19 +6,18 @@ use App\Models\SalesFee;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class SalesFeeSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        $this->call([
-            RoleSeeder::class,
-            UserSeeder::class,
-            SalesFee::class,
-        ]);
+        $sales = new SalesFee();
+        $sales->type = "percentage";
+        $sales->value = 30;
+        $sales->save();
     }
 }

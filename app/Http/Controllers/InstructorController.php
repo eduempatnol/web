@@ -8,6 +8,8 @@ use App\Models\Ebook;
 use App\Models\Forum;
 use App\Models\Lessons;
 use App\Models\Quiz;
+use App\Models\ScheduleMentoring;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +20,8 @@ use Illuminate\Support\Facades\File;
 class InstructorController extends Controller
 {
     public function dashboard() {
-        return view("instructor.dashboard");
+        $schedule = ScheduleMentoring::where("schedule_to", ">", Carbon::now()->format("Y-m-d H:i:s"))->get();
+        return view("instructor.dashboard", compact("schedule"));
     }
 
     public function courses() {
@@ -243,4 +246,6 @@ class InstructorController extends Controller
 
         return DataTables::of($invoices)->toJson();
     }
+
+    public function sotreInstuctorMentoring() {}
 }
