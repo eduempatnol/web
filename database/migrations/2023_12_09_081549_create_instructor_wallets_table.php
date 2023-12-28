@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("user_id");
             $table->enum("type", ["Primary", "Commission"]);
-            $table->double("balance");
+            $table->double("balance")->default(0);
             $table->timestamps();
 
             $table->foreign("user_id")->references("id")->on("users")->onUpdate("cascade")->onDelete("cascade");
