@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
         $user->role_id = 1;
         $user->sub_role_id = 1;
         $user->name = "Agung Ardiyanto";
-        $user->email = "agungd3v@gmail.com";
+        $user->email = "admin@gmail.com";
         $user->email_verified_at = Carbon::now();
         $user->password = Hash::make("12345678");
         $user->save();
