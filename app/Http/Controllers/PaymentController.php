@@ -191,9 +191,9 @@ class PaymentController extends Controller
             $snapToken = MidtransSnap::getSnapToken($payload);
             $snapUrl = MidtransSnap::getSnapUrl($payload);
 
-            $mentoringCheckout->snap_token = $snapToken;
-            $mentoringCheckout->snap_url = $snapUrl;
-            $mentoringCheckout->save();
+            $mentoringInvoice->snap_token = $snapToken;
+            $mentoringInvoice->snap_url = $snapUrl;
+            $mentoringInvoice->save();
 
             DB::commit();
             return redirect("/instructor/course/transaction");
