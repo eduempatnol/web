@@ -158,8 +158,8 @@ class PaymentController extends Controller
             $mentoringCheckout->save();
             
             $mentoringInvoice = new MentoringInvoice();
-            $mentoringCheckout->user_id = Auth::user()->id;
-            $mentoringCheckout->mentoring_checkout_id = $mentoringCheckout->id;
+            $mentoringInvoice->user_id = Auth::user()->id;
+            $mentoringInvoice->mentoring_checkout_id = $mentoringCheckout->id;
             $mentoringInvoice->code = "EMTRG-". time() . rand(10, 998);
             $mentoringInvoice->name = Auth::user()->name;
             $mentoringInvoice->email = Auth::user()->email;
