@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('schedule_mentorings', function (Blueprint $table) {
             $table->id();
             $table->enum("schedule_type", ["online", "offline"]);
-            $table->timestamp("schedule_from");
-            $table->timestamp("schedule_to");
+            $table->timestamp("schedule_from")->nullable();
+            $table->timestamp("schedule_to")->nullable();
             $table->string("schedule_link")->nullable();
             $table->string("schedule_address")->nullable();
             $table->enum("schedule_expired", ["active", "expired"]);
