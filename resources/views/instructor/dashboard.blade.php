@@ -21,8 +21,8 @@
                   <div class="d-flex flex-column gap-1 mb-3">
                     <div class="col-sm-12">
                       <div class="d-flex flex-column gap-1 mb-3">
-                        <label for="ketersediaan">Ketersediaan Program</label>
-                        <select name="ketersediaan" id="ketersediaan" class="form-control">
+                        <label for="mentoring_id">Ketersediaan Program</label>
+                        <select name="mentoring_id" id="mentoring_id" class="form-control">
                           <option value="" selected>Pilih Jadwal</option>
                           @foreach ($schedule as $sche)
                             <option value="{{ $sche->id }}">
