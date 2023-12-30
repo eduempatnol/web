@@ -205,8 +205,29 @@ class PaymentController extends Controller
     }
 
     public function checkStatus(Request $request) {
-        $mid = MidtransTransaction::status($request->code);
+        // $mid = MidtransTransaction::status($request->code);
 
-        return response()->json(["data" => $mid]);
+        // return response()->json(["data" => $mid]);
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.sandbox.midtrans.com/v2/'. $request->code .'/status',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: basic '. env("MIDTRANS_SERVER_KEY")
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+        return response()->json(["data" => $response]);
     }
 }
