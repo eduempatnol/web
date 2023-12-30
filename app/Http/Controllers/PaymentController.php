@@ -205,28 +205,27 @@ class PaymentController extends Controller
     }
 
     public function checkStatus(Request $request) {
-        // $mid = MidtransTransaction::status($request->code);
+        $mid = MidtransTransaction::status($request->code);
+        var_dump($mid);
+        // $curl = curl_init();
 
-        // return response()->json(["data" => $mid]);
-        $curl = curl_init();
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL => 'https://api.sandbox.midtrans.com/v2/'. $request->code .'/status',
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_ENCODING => '',
+        //     CURLOPT_MAXREDIRS => 10,
+        //     CURLOPT_TIMEOUT => 0,
+        //     CURLOPT_FOLLOWLOCATION => true,
+        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST => 'GET',
+        //     CURLOPT_HTTPHEADER => array(
+        //         'Authorization: basic '. base64_encode(env("MIDTRANS_SERVER_KEY") .":edukasiempatnol@gmail.com:". "D3w4n99@2023")
+        //     ),
+        // ));
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.sandbox.midtrans.com/v2/'. $request->code .'/status',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: basic '. base64_encode(env("MIDTRANS_SERVER_KEY") .":edukasiempatnol@gmail.com:". "D3w4n99@2023")
-            ),
-        ));
+        // $response = curl_exec($curl);
 
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        return response()->json(["data" => json_decode($response)]);
+        // curl_close($curl);
+        // return response()->json(["data" => json_decode($response)]);
     }
 }
