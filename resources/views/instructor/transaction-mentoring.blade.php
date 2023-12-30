@@ -50,7 +50,7 @@
         return `<span style="white-space: nowrap">${data}</span>`;
       }},
       {data: "id", searchable: true, orderable: false, render: function(data, type, row) {
-        return row.checkout.schedule_type;
+        return row.checkout.schedule.schedule_type;
       }},
       {data: "name", searchable: true, orderable: false, render: function(data, type, row) {
         return data;
