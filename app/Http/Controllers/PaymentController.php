@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Midtrans\Config as MidtransConfig;
 use Midtrans\Snap as MidtransSnap;
+use Midtrans\Transaction as MidtransTransaction;
 
 class PaymentController extends Controller
 {
@@ -201,5 +202,11 @@ class PaymentController extends Controller
             DB::rollBack();
             return response()->json(["message" => $e->getMessage()], 400);
         }
+    }
+
+    public function checkStatus(Request $request) {
+        $mid = MidtransTransaction::status($request->code);
+
+        return response()->json(["data" => $mid]);
     }
 }
