@@ -63,7 +63,7 @@
         if (data == "Pending") {
           return `
             <span class="badge bg-warning">${data}</span>
-            <a class="btn btn-sm btn-success" target="_blank" href="/payment/${row.code}">Bayar</a>
+            <a class="btn btn-sm btn-success" target="_blank" href="/payment/checkStatus/${row.code}">Bayar</a>
           `;
         }
         if (data == "Success") {
