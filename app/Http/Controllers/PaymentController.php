@@ -227,6 +227,6 @@ class PaymentController extends Controller
         $response = curl_exec($curl);
 
         curl_close($curl);
-        return response()->json(["data" => $response]);
+        return response()->json(["data" => json_decode($response)]);
     }
 }
