@@ -61,7 +61,10 @@
       {data: "status", searchable: true, orderable: false, render: function(data, type, row) {
         // 'Pending','Success','Expired','Error'
         if (data == "Pending") {
-          return `<span class="badge bg-warning">${data}</span>`;
+          return `
+            <span class="badge bg-warning">${data}</span>
+            <a class="btn btn-sm btn-success" href="${row.snap_url}">Bayar</a>
+          `;
         }
         if (data == "Success") {
           return `<span class="badge bg-primary">${data}</span>`;
