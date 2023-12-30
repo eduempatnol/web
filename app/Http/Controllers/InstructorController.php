@@ -253,7 +253,7 @@ class InstructorController extends Controller
     }
 
     public function getDataTransactionMentoring(Request $request) {
-        $invoices = MentoringInvoice::where("user_id", Auth::user()->id)->get();
+        $invoices = MentoringInvoice::with("checkout.schedule")->where("user_id", Auth::user()->id)->get();
 
         return DataTables::of($invoices)->toJson();
     }

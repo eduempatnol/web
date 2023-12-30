@@ -25,7 +25,8 @@
           <thead>
             <tr>
               <th style="white-space: nowrap">Invoice Code</th>
-              <th style="white-space: nowrap">Name</th>
+              <th style="white-space: nowrap">Tipe</th>
+              <th style="white-space: nowrap">Nama</th>
               <th style="white-space: nowrap">Nominal Bayar</th>
               <th style="white-space: nowrap">Status</th>
             </tr>
@@ -47,6 +48,9 @@
     columns: [
       {data: "code", searchable: false, orderable: false, render: function(data, type, row) {
         return `<span style="white-space: nowrap">${data}</span>`;
+      }},
+      {data: "id", searchable: true, orderable: false, render: function(data, type, row) {
+        return row.checkout.schedule_type;
       }},
       {data: "name", searchable: true, orderable: false, render: function(data, type, row) {
         return data;
