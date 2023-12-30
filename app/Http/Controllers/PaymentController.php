@@ -86,57 +86,76 @@ class PaymentController extends Controller
             DB::beginTransaction();
 
             $payment = CourseInvoice::where("code", $request->order_id)->first();
+            if ($payment) {
+                if (!in_array($request->status_code, ["200", "201"])) {
+                    throw new \Exception("Error, pay invoice");
+                }
 
-            if (!$payment) {
-                throw new \Exception("Error, invoice not found");
+                $payment->status = "Success";
+                $payment->save();
+
+                $course = Course::find($payment->course_id);
+                if (!$course) throw new \Exception("Error, course not found");
+
+                $wallet = InstructorWallet::where("user_id", $course->user_id)->where("type", "Primary")->first();
+                if (!$wallet) throw new \Exception("Error, wallet not found");
+
+                $salesRate = SalesFee::where("id", 1)->first();
+                $income = 0;
+
+                if ($salesRate->type == "percentage") {
+                    $income = $payment->amount - ($payment->amount * $salesRate->value / 100);
+                }
+                if ($salesRate->type == "fixed") {
+                    $income = $payment->amount - ($payment->amount - $salesRate->value);
+                }
+
+                $walletLog = new WalletLog();
+                $walletLog->from_table_wallet = "instructor_wallets";
+                $walletLog->from_table_wallet_id = $wallet->id;
+                $walletLog->from_table_invoice = "course_invoices";
+                $walletLog->from_table_invoice_id = $payment->id;
+                $walletLog->invoice_amount = $payment->amount;
+                $walletLog->income = $income;
+                $walletLog->wallet_balance_current = $wallet->balance;
+                $walletLog->wallet_balance = $wallet->balance + $income;
+                $walletLog->remarks = "Pendapatan dari penjualan (". $course->course_title .")";
+                $walletLog->save();
+
+                $wallet->balance = $wallet->balance + $walletLog->income;
+                $wallet->save();
+
+                $checkout = new CourseCheckout();
+                $checkout->note = "Berhasil melakukan pembelian kelas";
+                $checkout->user_id = $payment->user_id;
+                $checkout->course_id = $payment->course_id;
+                $checkout->invoice_id = $payment->id;
+                $checkout->save();
+
+                DB::commit();
+                return redirect()->route("user.class");
             }
-            if (!in_array($request->status_code, ["200", "201"])) {
-                throw new \Exception("Error, pay invoice");
+
+            $paymentMentoring = MentoringInvoice::where("code", $request->order_id)->first();
+            if ($paymentMentoring) {
+                if (!in_array($request->status_code, ["200", "201"])) {
+                    throw new \Exception("Error, pay invoice");
+                }
+
+                $paymentMentoring->status = "Success";
+                $paymentMentoring->save();
+
+                $checkoutMentor = MentoringCheckout::find($paymentMentoring->mentoring_checkout_id);
+                if (!$checkoutMentor) throw new \Exception("Error, mentor ini tidak pernah checkout sebelumnya");
+
+                $checkoutMentor->status = "Success";
+                $checkoutMentor->save();
+
+                DB::commit();
+                return redirect()->route("instructor.transaction.mentoring");
             }
 
-            $payment->status = "Success";
-            $payment->save();
-
-            $course = Course::find($payment->course_id);
-            if (!$course) throw new \Exception("Error, course not found");
-
-            $wallet = InstructorWallet::where("user_id", $course->user_id)->where("type", "Primary")->first();
-            if (!$wallet) throw new \Exception("Error, wallet not found");
-
-            $salesRate = SalesFee::where("id", 1)->first();
-            $income = 0;
-
-            if ($salesRate->type == "percentage") {
-                $income = $payment->amount - ($payment->amount * $salesRate->value / 100);
-            }
-            if ($salesRate->type == "fixed") {
-                $income = $payment->amount - ($payment->amount - $salesRate->value);
-            }
-
-            $walletLog = new WalletLog();
-            $walletLog->from_table_wallet = "instructor_wallets";
-            $walletLog->from_table_wallet_id = $wallet->id;
-            $walletLog->from_table_invoice = "course_invoices";
-            $walletLog->from_table_invoice_id = $payment->id;
-            $walletLog->invoice_amount = $payment->amount;
-            $walletLog->income = $income;
-            $walletLog->wallet_balance_current = $wallet->balance;
-            $walletLog->wallet_balance = $wallet->balance + $income;
-            $walletLog->remarks = "Pendapatan dari penjualan (". $course->course_title .")";
-            $walletLog->save();
-
-            $wallet->balance = $wallet->balance + $walletLog->income;
-            $wallet->save();
-
-            $checkout = new CourseCheckout();
-            $checkout->note = "Berhasil melakukan pembelian kelas";
-            $checkout->user_id = $payment->user_id;
-            $checkout->course_id = $payment->course_id;
-            $checkout->invoice_id = $payment->id;
-            $checkout->save();
-
-            DB::commit();
-            return redirect()->route("user.class");
+            throw new \Exception("Error, invoice not found");
         } catch (\Exception $e) {
             DB::rollBack();
             return abort(403);
@@ -197,7 +216,7 @@ class PaymentController extends Controller
             $mentoringInvoice->save();
 
             DB::commit();
-            return redirect("/instructor/course/transaction");
+            return redirect()->route("instructor.transaction.mentoring");
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(["message" => $e->getMessage()], 400);
