@@ -44,7 +44,6 @@
       </div>
     @endif
     @if ($mentoring)
-      {{dd($mentoring)}}
       <div class="alert alert-primary" role="alert">
         Ikuti kelas mentoring kamu disini — 
         @if ($mentoring->checkout->schedule->schedule_link)
