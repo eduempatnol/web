@@ -145,11 +145,11 @@ class PaymentController extends Controller
                 $paymentMentoring->status = "Success";
                 $paymentMentoring->save();
 
-                $checkoutMentor = MentoringCheckout::find($paymentMentoring->mentoring_checkout_id);
-                if (!$checkoutMentor) throw new \Exception("Error, mentor ini tidak pernah checkout sebelumnya");
+                // $checkoutMentor = MentoringCheckout::find($paymentMentoring->mentoring_checkout_id);
+                // if (!$checkoutMentor) throw new \Exception("Error, mentor ini tidak pernah checkout sebelumnya");
 
-                $checkoutMentor->status = "Success";
-                $checkoutMentor->save();
+                // $checkoutMentor->status = "Success";
+                // $checkoutMentor->save();
 
                 DB::commit();
                 return redirect()->route("instructor.transaction.mentoring");

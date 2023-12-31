@@ -4,7 +4,7 @@
 @section("content")
 <div class="row">
   <div class="col-sm-12 mb-4 order-0">
-    @if (count($schedule) > 0)
+    @if (count($schedule) > 0 && !$mentoring)
       <div class="d-flex align-items-center gap-2 mb-3">
         <span class="fw-bold">Kamu berhak mengikutin program mentorship, dan jadilah mentor sekarang!</span>
         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mentorship">Become a mentorship</button>
@@ -42,6 +42,9 @@
           </div>
         </div>
       </div>
+    @endif
+    @if ($mentoring)
+      {{dd($mentoring)}}
     @endif
     <div class="card">
       <div class="d-flex align-items-end row">

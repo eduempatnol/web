@@ -22,7 +22,9 @@ class InstructorController extends Controller
 {
     public function dashboard() {
         $schedule = ScheduleMentoring::where("schedule_to", ">", Carbon::now()->format("Y-m-d H:i:s"))->get();
-        return view("instructor.dashboard", compact("schedule"));
+        $mentoring = MentoringInvoice::with("checkout.schedule")->where("user_id", Auth::user()->id)->where("status", "Success")->first();
+
+        return view("instructor.dashboard", compact("schedule", "mentoring"));
     }
 
     public function courses() {
