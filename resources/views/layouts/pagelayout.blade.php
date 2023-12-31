@@ -41,8 +41,31 @@
   </head>
 
   <body>
-    <header class="sticky top-0 z-20 bg-white py-6 px-[50px]">
-      <div class="flex items-center justify-between">
+    <header class="sticky top-0 z-20 bg-white py-6 px-[20px] md:px-[50px]">
+      <div class="flex items-center justify-start md:justify-between gap-3 md:gap-0">
+        <div class="inline lg:hidden drawer w-auto">
+          <input id="menu-mobile" type="checkbox" class="drawer-toggle" />
+          <div class="drawer-content">
+            {{-- <label for="menu-mobile" class="btn btn-primary drawer-button">Open drawer</label> --}}
+            <label for="menu-mobile">
+              <i class='bx bx-menu' style="font-size: 30px"></i>
+            </label>
+          </div> 
+          <div class="drawer-side">
+            <label for="menu-mobile" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+              <li>
+                <a href="/">Flash Sale</a>
+              </li>
+              <li>
+                <a href="/course">Kelas</a>
+              </li>
+              <li>
+                <a href="/">Challange</a>
+              </li>
+            </ul>
+          </div>
+        </div>
         <a href="/" class="flex items-center gap-2 select-none">
           <img src="{{ asset("logo.png") }}" class="w-[100px] md:w-[150px] rounded-lg" alt="logo">
         </a>
@@ -91,7 +114,7 @@
     </header>
     @yield("content")
     @stack('js')
-    <footer class="bg-white p-[50px]">
+    <footer class="bg-white p-[50px] px-[20px] md:px-[50px]">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
           <a href="/" class="flex items-center gap-2 select-none">
