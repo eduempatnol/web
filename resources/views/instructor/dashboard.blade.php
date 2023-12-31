@@ -47,7 +47,7 @@
       <div class="alert alert-primary" role="alert">
         Ikuti kelas mentoring kamu disini — 
         @if ($mentoring->checkout->schedule->schedule_link)
-          <a href="{{ $mentoring->checkout->schedule->schedule_link }}">
+          <a href="{{ $mentoring->checkout->schedule->schedule_link }}" target="_blank">
             <strong>{{ $mentoring->checkout->schedule->schedule_link }}</strong>
           </a>
         @endif
