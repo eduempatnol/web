@@ -45,6 +45,15 @@
     @endif
     @if ($mentoring)
       {{dd($mentoring)}}
+      <div class="alert alert-primary" role="alert">
+        Ikuti kelas mentoring kamu disini — 
+        @if ($mentoring->checkout->schedule->schedule_link)
+          <a href="{{ $mentoring->checkout->schedule->schedule_link }}">{{ $mentoring->checkout->schedule->schedule_link }}</a>
+        @endif
+        @if ($mentoring->checkout->schedule->schedule_address)
+          <span>{{ $mentoring->checkout->schedule->schedule_address }}</span>
+        @endif
+      </div>
     @endif
     <div class="card">
       <div class="d-flex align-items-end row">
