@@ -36,10 +36,12 @@ class CourseController extends Controller
         if (Auth::check()) {
             $courseCheckout = CourseCheckout::where("user_id", Auth::user()->id)->where("course_id", $course->id)->first();
         }
-
         if (!$course) {
             return abort(404);
         }
+
+        $course->course_watchlist = $course->course_watchlist + 1;
+        $course->save();
 
         return view("course-detail", compact("course", "courseCheckout", "countLessons"));
     }
