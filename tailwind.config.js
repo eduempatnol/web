@@ -13,7 +13,8 @@ module.exports = {
         "success": "#22C58B",
         "secondary": "#E5E9F2",
         "secondary-2": "#E5E9F2",
-        "gold": "#F4A42B"
+        "gold": "#F4A42B",
+        "bannerbgsection": "rgba(57, 61, 64, 0.7)"
       }
     },
   },

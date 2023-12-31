@@ -10,6 +10,7 @@
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset("assets/vendor/fonts/boxicons.css") }}" />
     <link rel="canonical" href="{{ URL::current() }}">
+    @stack("css")
     <title>@hasSection("title")
       @yield('title')
     @else
@@ -40,23 +41,17 @@
   </head>
 
   <body>
-    <header class="sticky top-0 z-20 bg-[#F6F8FD] py-6 px-[50px]">
+    <header class="sticky top-0 z-20 bg-white py-6 px-[50px]">
       <div class="flex items-center justify-between">
         <a href="/" class="flex items-center gap-2 select-none">
-          <img src="{{ asset("favicon.jpg") }}" class="w-[60px] rounded-lg" alt="">
-          <div class="flex flex-col text-black">
-            <span class="text-xl font-bold">EdukasiEmpatNol</span>
-            <span class="text-sm">Upgrade Your Skills</span>
-          </div>
+          <img src="{{ asset("logo.png") }}" class="w-[100px] md:w-[150px] rounded-lg" alt="logo">
         </a>
-        <div class="flex items-center gap-10">
+        <div class="hidden lg:flex items-center gap-10">
           <a href="/">Flash Sale</a>
           <a href="/course">Kelas</a>
-          {{-- <a href="/">Alur Belajar</a> --}}
-          {{-- <a href="/forum">Forum</a> --}}
           <a href="/">Challange</a>
         </div>
-        <div class="flex {{ Auth::check() ? "gap-6" : "gap-3" }} items-center">
+        <div class="hidden lg:flex {{ Auth::check() ? "gap-6" : "gap-3" }} items-center">
           @if (Auth::check())
             <div class="dropdown dropdown-end">
               <div tabindex="0" class="shadow cursor-pointer w-[40px] h-[40px] bg-secondary flex items-center justify-center rounded-full relative">
@@ -96,5 +91,25 @@
     </header>
     @yield("content")
     @stack('js')
+    <footer class="bg-white p-[50px]">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <a href="/" class="flex items-center gap-2 select-none">
+            <img src="{{ asset("logo.png") }}" class="w-[100px] md:w-[150px] rounded-lg" alt="logo">
+          </a>
+          <div class="mt-3 text-black">
+            Tingkatkan kompetensi dan keterampilan melalui berbagai fitur unggulan, mulai dari mengakses kursus, live webinar, membaca e-book, diskusi di forum hingga private mentoring dengan para ahli.
+          </div>
+        </div>
+        <div class="flex justify-end">
+          <div class="w-full md:w-1/2">
+            <div class="text-lg font-bold mb-5">Kontak</div>
+            <div class="mb-3">Ruko Inkopal, Kramat Raya, Senen, Jakarta Pusat, Jakarta 10450</div>
+            <div class="mb-1">cs@edukasiempatnol.com</div>
+            <div>+6281911777742</div>
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

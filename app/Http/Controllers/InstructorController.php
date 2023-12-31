@@ -183,9 +183,6 @@ class InstructorController extends Controller
 
                 foreach ($request->lesson_title as $key => $lessonTitle) {
                     $lesson = new Lessons();
-                    if (count($lessons) > 0) {
-                        $lesson->id = $lessons[$key];
-                    }
                     $lesson->course_id = $course->id;
                     $lesson->lesson_title = $lessonTitle;
                     $lesson->lesson_link = $request->lesson_link[$key];
@@ -203,9 +200,6 @@ class InstructorController extends Controller
 
                 foreach ($request->ebook_title as $key => $ebookTitle) {
                     $ebook = new Ebook();
-                    if (count($ebooks) > 0) {
-                        $ebook->id = $ebooks[$key];
-                    }
                     $ebook->course_id = $course->id;
                     $ebook->ebook_title = $ebookTitle;
                     $ebook->ebook_link = $request->ebook_link[$key];
@@ -221,9 +215,6 @@ class InstructorController extends Controller
 
                 foreach ($request->question as $key => $question) {
                     $quiz = new Quiz();
-                    if (count($quis) > 0) {
-                        $quiz->id = $quis[$key];
-                    }
                     $quiz->course_id = $course->id;
                     $quiz->question = $question;
                     $quiz->type = $request->type[$key];
