@@ -32,6 +32,10 @@ Route::group(["prefix" => "admin", "middleware" => ["is_admin"]], function() {
 		Route::post("schedule", [AdminController::class, "storeMentoringSchedule"])->name("mentoring.schedule.store");
 		Route::get("schedule/data", [AdminController::class, "mentoringScheduleData"])->name("mentoring.schedule.data");
 	});
+	Route::get("instructors", [AdminController::class, "instructors"])->name("admin.instructors");
+	Route::get("instructors/data", [AdminController::class, "dataInstructors"])->name("admin.instructors.data");
+	Route::get("instructors/up", [AdminController::class, "upInstructor"])->name("admin.instructors.up");
+	Route::get("instructors/down", [AdminController::class, "downInstructor"])->name("admin.instructors.down");
 });
 
 Route::group(["prefix" => "user", "middleware" => ["is_user"]], function() {

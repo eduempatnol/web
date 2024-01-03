@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\CategoryMentoring;
 use App\Models\Course;
 use App\Models\CourseInvoice;
+use App\Models\MentoringCheckout;
+use App\Models\MentoringInvoice;
 use App\Models\SalesFee;
 use App\Models\ScheduleMentoring;
 use App\Models\User;
@@ -124,6 +126,57 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with("error", $e->getMessage());
+        }
+    }
+
+    public function instructors() {
+        return view("admin.instructor.index");
+    }
+
+    public function dataInstructors(Request $request) {
+        $instructors = MentoringCheckout::query()->with("user")->orderBy("id", "desc")->get();
+        return DataTables::of($instructors)->toJson();
+    }
+
+    public function upInstructor(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $ix = MentoringCheckout::where("id", $request->id)->first();
+            if (!$ix) throw new \Exception("Error, data not found");
+
+            $in = MentoringInvoice::where("mentoring_checkout_id", $ix->id)->where("status", "Success")->first();
+            if (!$in) throw new \Exception("Belum melunasi pembayaran program mentoring");
+
+            $ix->status = "Success";
+            $ix->save();
+
+            DB::beginTransaction();
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::beginTransaction();
+            return redirect()->back()->with("errors", $e->getMessage());
+        }
+    }
+
+    public function downInstructor(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $ix = MentoringCheckout::where("id", $request->id)->first();
+            if (!$ix) throw new \Exception("Error, data not found");
+
+            $in = MentoringInvoice::where("mentoring_checkout_id", $ix->id)->where("status", "Success")->first();
+            if (!$in) throw new \Exception("Belum melunasi pembayaran program mentoring");
+
+            $ix->status = "Expired";
+            $ix->save();
+
+            DB::beginTransaction();
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::beginTransaction();
+            return redirect()->back()->with("errors", $e->getMessage());
         }
     }
 }

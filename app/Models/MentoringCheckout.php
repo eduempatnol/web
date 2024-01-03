@@ -16,4 +16,8 @@ class MentoringCheckout extends Model
     public function invoices() {
         return $this->hasMany(MentoringInvoice::class, "mentoring_checkout_id");
     }
+
+    public function user() {
+        return $this->belongsTo(User::class, "user_id");
+    }
 }
