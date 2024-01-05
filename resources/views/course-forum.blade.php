@@ -8,9 +8,9 @@
     <div class="mt-16">
       <div class="flex items-center gap-3 justify-between mb-5">
         <h4 class="font-semibold text-primary">Threads</h4>
-        <button class="btn btn-sm btn-primary my-2" type="button">Buat Threads</button>
+        <label class="btn btn-sm btn-primary my-2 text-white" for="createThreads">Buat Threads</label>
       </div>
-      @foreach ($forum->threads as $thread)
+      @foreach ($forum->threads->reverse() as $thread)
         <div class="mt-3 border border-primary bg-white rounded-lg flex items-center px-5 py-3 gap-5 select-none cursor-pointer">
           <div class="w-[40px] h-[40px] border border-primary rounded-full bg-white overflow-hidden">
             <img src="{{ asset($thread->user->photo ?? 'assets/img/avatars/1.png') }}" class="w-full h-full" alt="avatar">
@@ -25,6 +25,29 @@
         </div>
       @endforeach
     </div>
+  </div>
+</div>
+<input type="checkbox" id="createThreads" class="modal-toggle" />
+<div class="modal" role="dialog">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Buat Thread</h3>
+    <form id="newThreads" method="POST" action="{{ route("threads.post", $forum->id) }}">
+      @csrf
+      <div class="forum-body">
+        <div class="flex flex-col gap-1 mt-3">
+          <label for="title" class="text-sm">Thread Title</label>
+          <input type="text" name="thread_title" class="outline-none border rounded-lg py-2 px-3 text-sm" autocomplete="off">
+        </div>
+        <div class="flex flex-col gap-1 mt-3">
+          <label for="description" class="text-sm">Thread Description</label>
+          <textarea name="thread_description" class="outline-none border rounded-lg py-2 px-3 text-sm" autocomplete="off" rows="5"></textarea>
+        </div>
+      </div>
+      <div class="modal-action">
+        <button class="btn bg-primary text-white hover:bg-primary">Submit</button>
+        <label for="createThreads" class="btn">Close!</label>
+      </div>
+    </form>
   </div>
 </div>
 @endsection

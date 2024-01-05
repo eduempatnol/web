@@ -72,7 +72,8 @@ Route::group(["prefix" => "payment", "middleware" => "auth"], function() {
 	Route::get("checkStatus/{code}", [PaymentController::class, "checkStatus"])->name("payment.status");
 });
 
-Route::group(["prefix" => "forum"], function() {
+Route::group(["prefix" => "forum", "middleware" => ["auth"]], function() {
+	Route::post("threads/{forum_id}", [ForumController::class, "postThreads"])->name("threads.post");
 	Route::get("{courseSlug}", [ForumController::class, "courseForum"]);
 });
 
