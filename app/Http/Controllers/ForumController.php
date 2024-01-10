@@ -53,4 +53,14 @@ class ForumController extends Controller
             return redirect()->back()->with("error", $e->getMessage());
         }
     }
+
+    public function showThreads(Request $request, $courseSlug, $threadId) {
+        $course = Course::where("course_slug", $courseSlug)->first();
+        if (!$course) return abort(404);
+
+        $thread = Threads::with("comments")->where("id", $threadId)->first();
+        if (!$thread) return abort(404);
+
+        return view("forum-threads", compact("thread"));
+    }
 }

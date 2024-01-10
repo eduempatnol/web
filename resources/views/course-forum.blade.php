@@ -11,7 +11,7 @@
         <label class="btn btn-sm btn-primary my-2 text-white" for="createThreads">Buat Threads</label>
       </div>
       @foreach ($forum->threads->reverse() as $thread)
-        <div class="mt-3 border border-primary bg-white rounded-lg flex items-center px-5 py-3 gap-5 select-none cursor-pointer">
+        <div onclick="showThread({{ $thread->id }})" class="mt-3 border border-primary bg-white rounded-lg flex items-center px-5 py-3 gap-5 select-none cursor-pointer">
           <div class="w-[40px] h-[40px] border border-primary rounded-full bg-white overflow-hidden">
             <img src="{{ asset($thread->user->photo ?? 'assets/img/avatars/1.png') }}" class="w-full h-full" alt="avatar">
           </div>
@@ -51,3 +51,11 @@
   </div>
 </div>
 @endsection
+
+@push("js")
+<script>
+  function showThread(param) {
+    return location.href = location.href + "/" + param;
+  }
+</script>
+@endpush

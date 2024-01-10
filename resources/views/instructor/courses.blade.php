@@ -29,6 +29,7 @@
                 <th style="white-space: nowrap">Thumbnail</th>
                 <th style="white-space: nowrap">Judul Kursus</th>
                 <th style="white-space: nowrap">Harga Kursus</th>
+                <th style="white-space: nowrap">Terdaftar</th>
                 <th>Aksi</th>
               </tr>
             </thead>
@@ -53,12 +54,20 @@
       }},
       {data: "course_title", searchable: true, orderable: false, render: function(data, type, row) {
         return `<div>
+          <div class="d-flex align-items-center gap-1 mb-2 fw-bold text-primary">
+            <i class='bx bx-bullseye'></i>
+            <span style="margin-top: 0.5px">${row.course_watchlist}</span>
+            <span style="margin-top: 0.5px">Watchers</span>
+          </div>
           <span>( ${row.lessons.length} Materi )</span>
           <h5 class="mt-1">${data}</h5>
         </div>`;
       }},
       {data: "course_price", searchable: true, orderable: false, render: function(data, type, row) {
         return `Rp ${data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+      }},
+      {data: "invoices_count", searchable: true, orderable: false, render: function(data, type, row) {
+        return `<div class="text-center">${data}</div>`;
       }},
       {data: "id", searchable: false, orderable: false, render: function(data, type, row) {
         return `<div>

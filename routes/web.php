@@ -74,6 +74,7 @@ Route::group(["prefix" => "payment", "middleware" => "auth"], function() {
 
 Route::group(["prefix" => "forum", "middleware" => ["auth"]], function() {
 	Route::post("threads/{forum_id}", [ForumController::class, "postThreads"])->name("threads.post");
+	Route::get("{courseSlug}/{threadId}", [ForumController::class, "showThreads"])->name("threads.show");
 	Route::get("{courseSlug}", [ForumController::class, "courseForum"]);
 });
 

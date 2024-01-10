@@ -46,7 +46,14 @@ class InstructorController extends Controller
     }
 
     public function courseData(Request $request) {
-        $data = Course::with("lessons")->where("user_id", Auth::user()->id)->get();
+        $data = Course::with("lessons")
+        ->withCount([
+            "invoices" => function ($query) {
+                return $query->where("status", "Success");
+            }
+        ])
+        ->where("user_id", Auth::user()->id)->get();
+
         return DataTables::of($data)->toJson();
     }
 
