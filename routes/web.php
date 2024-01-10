@@ -46,14 +46,18 @@ Route::group(["prefix" => "user", "middleware" => ["is_user"]], function() {
 
 Route::group(["prefix" => "instructor", "middleware" => ["is_instructor"]], function() {
 	Route::get("", [InstructorController::class, "dashboard"])->name("instructor.dashboard");
-	Route::get("courses", [InstructorController::class, "courses"])->name("instructor.courses");
-	Route::get("courses/data", [InstructorController::class, "courseData"])->name("instructor.courses.data");
-	Route::get("courses/add", [InstructorController::class, "courseAdd"])->name("instructor.course.add");
-	Route::get("courses/edit/{id}", [InstructorController::class, "courseEdit"])->name("instructor.course.edit");
-	Route::post("courses/submit", [InstructorController::class, "courseSubmit"])->name("instructor.course.submit");
-	Route::put("courses/update/{id}", [InstructorController::class, "courseUpdate"])->name("instructor.course.update");
-	Route::get("course/transaction", [InstructorController::class, "transaction"])->name("instructor.transaction");
-	Route::get("course/transaction/data", [InstructorController::class, "getDataTransaction"])->name("instructor.transaction.data");
+	Route::group(["prefix" => "courses"], function() {
+		Route::get("", [InstructorController::class, "courses"])->name("instructor.courses");
+		Route::get("data", [InstructorController::class, "courseData"])->name("instructor.courses.data");
+		Route::get("add", [InstructorController::class, "courseAdd"])->name("instructor.course.add");
+		Route::get("edit/{id}", [InstructorController::class, "courseEdit"])->name("instructor.course.edit");
+		Route::post("submit", [InstructorController::class, "courseSubmit"])->name("instructor.course.submit");
+		Route::put("update/{id}", [InstructorController::class, "courseUpdate"])->name("instructor.course.update");
+		Route::get("transaction", [InstructorController::class, "transaction"])->name("instructor.transaction");
+		Route::get("transaction/data", [InstructorController::class, "getDataTransaction"])->name("instructor.transaction.data");
+		Route::get("{courseId}", [InstructorController::class, "userInCourse"])->name("instructor.users.course");
+		Route::post("{courseId}", [InstructorController::class, "userInCourseData"])->name("instructor.users.course.data");
+	});
 	// Route::post("mentoring/store", [InstructorController::class, "sotreInstuctorMentoring"])->name("instructor.mentoring.store");
 	Route::get("mentoring/transaction", [InstructorController::class, "transactionMentoring"])->name("instructor.transaction.mentoring");
 	Route::get("mentoring/transaction/data", [InstructorController::class, "getDataTransactionMentoring"])->name("instructor.transaction.mentoring.data");

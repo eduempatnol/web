@@ -261,4 +261,19 @@ class InstructorController extends Controller
 
         return DataTables::of($invoices)->toJson();
     }
+
+    public function userInCourse(Request $request, $courseId) {
+        $course = Course::where("id", $courseId)->where("user_id", Auth::user()->id)->first();
+        if (!$course) {
+            return abort(404);
+        }
+
+        return view("instructor.courses-user", compact("course"));
+    }
+
+    public function userInCourseData(Request $request, $courseId) {
+        $invoices = CourseInvoice::with("user", "course")->where("course_id", $courseId)->where("status", "Success")->get();
+
+        return DataTables::of($invoices)->toJson();
+    }
 }

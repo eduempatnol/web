@@ -29,7 +29,7 @@
                 <th style="white-space: nowrap">Thumbnail</th>
                 <th style="white-space: nowrap">Judul Kursus</th>
                 <th style="white-space: nowrap">Harga Kursus</th>
-                <th style="white-space: nowrap">Terdaftar</th>
+                <th style="white-space: nowrap">Siswa/Siswi</th>
                 <th>Aksi</th>
               </tr>
             </thead>
@@ -82,6 +82,11 @@
         </div>`;
       }}
     ]
+  });
+
+  $("#tables tbody").on("click", "tr", function() {
+    const data = table.row(this).data();
+    return location.href = `/instructor/courses/${data.id}`;
   });
 </script>
 @endpush
