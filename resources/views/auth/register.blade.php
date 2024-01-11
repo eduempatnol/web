@@ -23,17 +23,17 @@
   <body>
     <div class="min-h-screen flex justify-center items-center px-5 select-none">
       <div class="w-full max-w-[480px]">
-        <div class="flex justify-center">
-          <img src="{{ asset("favicon.jpg") }}" class="rounded-lg w-1/4 md:w-1/6" alt="">
-        </div>
         <div class="py-[36px] px-[31px] bg-white rounded-lg mt-3 md:mt-5">
+          <div class="flex justify-center mb-10">
+            <img src="{{ asset("logo.png") }}" class="w-[100px] md:w-[150px] rounded-lg" alt="logo">
+          </div>
           <span class="text-xl md:text-2xl">Sign Up</span>
           @if (Session::has("error"))
             <div class="px-5 py-3 w-full rounded-lg text-sm bg-red-500 text-white font-bold mt-5">
               {{ Session::get("error") }}
             </div>
           @endif
-          <div role="tablist" class="tabs tabs-bordered {{ Session::has("error") ? "mt-5" : "mt-10" }} w-full">
+          <div role="tablist" class="tabs tabs-bordered {{ Session::has("error") ? "mt-5" : "mt-8" }} w-full">
             {{-- Student --}}
             <input type="radio" name="register" role="tab" class="tab" onclick="resetForm()" aria-label="Pelajar" checked />
             <div role="tabpanel" class="tab-content">

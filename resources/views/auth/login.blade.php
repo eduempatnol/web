@@ -23,12 +23,12 @@
   <body>
     <div class="min-h-screen flex justify-center items-center px-5 select-none">
       <div class="w-full max-w-[480px]">
-        <div class="flex justify-center">
-          <img src="{{ asset("favicon.jpg") }}" class="rounded-lg w-1/4 md:w-1/6" alt="">
-        </div>
         <div class="py-[36px] px-[31px] bg-white rounded-lg mt-3 md:mt-5">
+          <div class="flex justify-center mb-10">
+            <img src="{{ asset("logo.png") }}" class="w-[100px] md:w-[150px] rounded-lg" alt="logo">
+          </div>
           <span class="text-xl md:text-2xl">Sign In</span>
-          <form class="mt-10" method="POST" action="{{ route("login") }}">
+          <form class="mt-8" method="POST" action="{{ route("login") }}">
             @if (Session::has("success"))
               <div class="px-5 py-3 w-full rounded-lg text-sm bg-success text-white font-bold mb-3">
                 {{ Session::get("success") }}

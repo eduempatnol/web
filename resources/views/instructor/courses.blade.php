@@ -54,10 +54,22 @@
       }},
       {data: "course_title", searchable: true, orderable: false, render: function(data, type, row) {
         return `<div>
-          <div class="d-flex align-items-center gap-1 mb-2 fw-bold text-primary">
-            <i class='bx bx-bullseye'></i>
-            <span style="margin-top: 0.5px">${row.course_watchlist}</span>
-            <span style="margin-top: 0.5px">Watchers</span>
+          <div class="d-flex align-items-center mb-2 fw-bold text-primary gap-1">
+            <div class="bg-primary d-flex align-items-center gap-1 text-white fw-bold px-2 py-1 rounded">
+              <i class='bx bx-bullseye'></i>
+              <span style="margin-top: 0.5px; font-size: 13px">${row.course_watchlist}</span>
+              <span style="margin-top: 0.5px; font-size: 13px">Watchers</span>
+            </div>
+            <div class="bg-${row.course_certificate == 1 ? "success" : "danger"} d-flex align-items-center gap-1 text-white fw-bold px-2 py-1 rounded">
+              <i class='bx bxs-certification'></i>
+              <span style="margin-top: 0.5px; font-size: 13px">${row.course_certificate == 1 ? "Yes" : "No"}</span>
+              <span style="margin-top: 0.5px; font-size: 13px">Certificates</span>
+            </div>
+            <div class="bg-${row.consultation_certificate == 1 ? "info" : "danger"} d-flex align-items-center gap-1 text-white fw-bold px-2 py-1 rounded">
+              <i class='bx bxs-conversation' ></i>
+              <span style="margin-top: 0.5px; font-size: 13px">${row.consultation_certificate == 1 ? "Yes" : "No"}</span>
+              <span style="margin-top: 0.5px; font-size: 13px">Consultation</span>
+            </div>
           </div>
           <span>( ${row.lessons.length} Materi )</span>
           <h5 class="mt-1">${data}</h5>
@@ -86,7 +98,9 @@
 
   $("#tables tbody").on("click", "tr", function() {
     const data = table.row(this).data();
-    return location.href = `/instructor/courses/${data.id}`;
+    if (data.course_certificate == 1) {
+      return location.href = `/instructor/courses/${data.id}`;
+    }
   });
 </script>
 @endpush

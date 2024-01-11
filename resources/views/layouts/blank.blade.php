@@ -40,14 +40,10 @@
   </head>
 
   <body>
-    <header class="sticky top-0 z-20 bg-[#F6F8FD] py-6 px-[50px]">
+    <header class="sticky top-0 z-20 bg-white py-6 px-[50px]">
       <div class="flex items-center justify-between">
         <a href="/" class="flex items-center gap-2 select-none">
-          <img src="{{ asset("favicon.jpg") }}" class="w-[60px] rounded-lg" alt="">
-          <div class="flex flex-col text-black">
-            <span class="text-xl font-bold">EdukasiEmpatNol</span>
-            <span class="text-sm">Upgrade Your Skills</span>
-          </div>
+          <img src="{{ asset("logo.png") }}" class="w-[100px] md:w-[150px] rounded-lg" alt="logo">
         </a>
         <div class="flex items-center gap-10">
         </div>

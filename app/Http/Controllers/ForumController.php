@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Forum;
+use App\Models\ThreadComment;
 use App\Models\Threads;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,9 +59,30 @@ class ForumController extends Controller
         $course = Course::where("course_slug", $courseSlug)->first();
         if (!$course) return abort(404);
 
-        $thread = Threads::with("comments")->where("id", $threadId)->first();
+        $thread = Threads::with("comments.user")->where("id", $threadId)->first();
         if (!$thread) return abort(404);
 
         return view("forum-threads", compact("thread"));
+    }
+
+    public function commentThread(Request $request, $threadId) {
+        try {
+            DB::beginTransaction();
+
+            $thread = Threads::find($threadId);
+            if (!$thread) throw new \Exception("Error, thread not found!");
+
+            $threadComment = new ThreadComment();
+            $threadComment->thread_id = $thread->id;
+            $threadComment->user_id = Auth::user()->id;
+            $threadComment->comment = $request->comment;
+            $threadComment->save();
+
+            DB::commit();
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with("error", $e->getMessage());
+        }
     }
 }
