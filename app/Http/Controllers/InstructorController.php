@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseCertificate;
 use App\Models\CourseInvoice;
 use App\Models\Ebook;
 use App\Models\Forum;
@@ -10,6 +11,7 @@ use App\Models\Lessons;
 use App\Models\MentoringInvoice;
 use App\Models\Quiz;
 use App\Models\ScheduleMentoring;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -272,8 +274,48 @@ class InstructorController extends Controller
     }
 
     public function userInCourseData(Request $request, $courseId) {
-        $invoices = CourseInvoice::with("user", "course")->where("course_id", $courseId)->where("status", "Success")->get();
+        $invoices = CourseInvoice::with("user.courseCertificate", "course")->where("course_id", $courseId)->where("status", "Success")->get();
 
         return DataTables::of($invoices)->toJson();
+    }
+
+    public function uploadCertificate(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $course = Course::find($request->course_id);
+            if (!$course) throw new \Exception("Error, course error");
+
+            $user = User::find($request->user_id);
+            if (!$user) throw new \Exception("Error, user not found");
+
+            if (!$request->hasFile("file")) throw new \Exception("Error, error file");
+            
+            $file = $request->file("file");
+            $extension = $file->getClientOriginalExtension();
+            $filenameSave = time() . "_" . rand(100, 9999) . "." . $extension;
+            $file->move("uploads", $filenameSave);
+
+            $certificate = CourseCertificate::where("course_id", $request->course_id)->where("user_id", $request->user_id)->first();
+
+            File::delete($certificate->certificate_file);
+
+            if ($certificate) {
+                $certificate->certificate_file = "uploads/certificate" . $filenameSave;
+                $certificate->save();
+            } else {
+                $certificate = new CourseCertificate();
+                $certificate->course_id = $course->id;
+                $certificate->user_id = $user->id;
+                $certificate->certificate_file = "uploads/certificate" . $filenameSave;
+                $certificate->save();
+            }
+
+            DB::commit();
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with("error", $e->getMessage());
+        }
     }
 }

@@ -61,6 +61,9 @@ Route::group(["prefix" => "instructor", "middleware" => ["is_instructor"]], func
 	// Route::post("mentoring/store", [InstructorController::class, "sotreInstuctorMentoring"])->name("instructor.mentoring.store");
 	Route::get("mentoring/transaction", [InstructorController::class, "transactionMentoring"])->name("instructor.transaction.mentoring");
 	Route::get("mentoring/transaction/data", [InstructorController::class, "getDataTransactionMentoring"])->name("instructor.transaction.mentoring.data");
+
+	// upload
+	Route::post("courseupload", [InstructorController::class, "uploadCertificate"])->name("instructor.upload.certificate");
 });
 
 Route::group(["prefix" => "course"], function() {

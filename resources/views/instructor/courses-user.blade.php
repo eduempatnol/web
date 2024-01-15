@@ -32,6 +32,8 @@
               <th style="white-space: nowrap">Invoice</th>
               <th style="white-space: nowrap">Siswa/Siswi</th>
               <th style="white-space: nowrap">Email</th>
+              <th style="white-space: nowrap">Sertifikat</th>
+              <th style="white-space: nowrap">Aksi</th>
             </tr>
           </thead>
         </table>
@@ -62,12 +64,43 @@
       {data: "email", searchable: false, orderable: false, render: function(data, type, row) {
         return data;
       }},
+      {data: "id", searchable: false, orderable: false, render: function(data, type, row) {
+        if (row.user.course_certificate.length > 0) {
+          const cc = row.user.course_certificate.filter((m) => m.course_id == row.course.id);
+          if (cc.length > 0) {
+            return "<span class='badge bg-info'>Sudah</span>";
+          }
+          return "<span class='badge bg-warning'>Belum</span>";
+        }
+        return "<span class='badge bg-warning'>Belum</span>";
+      }},
+      {data: "id", searchable: false, orderable: false, render: function(data, type, row) {
+        return `
+          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#upload-${data}">Upload sertifikat</button>
+          <div class="modal fade" id="upload-${data}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Upload Sertifikat</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{ route("instructor.upload.certificate") }}" enctype="multipart/form-data">
+                  <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                  <input type="hidden" name="course_id" value="${row.course.id}" />
+                  <input type="hidden" name="user_id" value="${row.user.id}" />
+                  <div class="modal-body">
+                    <input type="file" name="file" class="form-control" />
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        `;
+      }},
     ]
-  });
-
-  $("#tables tbody").on("click", "tr", function() {
-    const data = table.row(this).data();
-    return location.href = `/instructor/courses/${data.id}`;
   });
 </script>
 @endpush

@@ -32,4 +32,8 @@ class Course extends Model
     public function forum() {
         return $this->hasOne(Forum::class, "course_id");
     }
+
+    public function userCertificate() {
+        return $this->hasMany(CourseCertificate::class, "course_id");
+    }
 }
