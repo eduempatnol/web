@@ -140,8 +140,30 @@ class AuthController extends Controller
 
     public function handleGoogleCallback() {
         try {
-            $user = Socialite::driver("google")->user();
-            dd($user);
+            DB::beginTransaction();
+
+            $googleUser = Socialite::driver("google")->user();
+            $user = User::where("email", $googleUser->email)->first();
+
+            if (!$user) {
+                $user = new User();
+                $user->role_id = 2;
+                $user->sub_role_id = 5;
+                $user->name = $googleUser->name;
+                $user->email = $googleUser->email;
+                $user->email_verified_at = Carbon::now();
+                $user->password = Hash::make("12345678");
+                $user->google_id = $googleUser->id;
+                $user->save();
+            } else {
+                $user->google_id = $googleUser->id;
+                $user->save();
+            }
+
+            DB::commit();
+
+            \auth()->login($user, true);
+            return redirect("/");
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route("login")->with("error", $e->getMessage());
