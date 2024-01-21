@@ -50,6 +50,9 @@
             </div>
             <div class="mt-8">
               <button class="w-full bg-primary text-white font-semibold py-3 rounded-lg">Sign In</button>
+              <div class="flex mt-3">
+                <a href="{{ route("login.google") }}" class="text-center w-full bg-primary text-white font-semibold py-3 rounded-lg">Sign In With Google</a>
+              </div>
               <div class="text-center text-sm mt-3">
                 <span class="text-black">Belum punya akun?</span>
                 <a href="{{ route("register") }}" class="text-primary">Daftar disini</a>

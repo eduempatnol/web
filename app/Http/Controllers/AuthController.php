@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -131,5 +132,19 @@ class AuthController extends Controller
         Auth::logout();
 
         return redirect("/");
+    }
+
+    public function redirectGoogle() {
+        return Socialite::driver("google")->redirect();
+    }
+
+    public function handleGoogleCallback() {
+        try {
+            $user = Socialite::driver("google")->user();
+            dd($user);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route("login")->with("error", $e->getMessage());
+        }
     }
 }

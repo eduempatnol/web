@@ -18,6 +18,8 @@ Route::post("login", [AuthController::class, "loginPost"])->name("login.post");
 Route::get("register", [AuthController::class, "register"])->name("register");
 Route::post("register", [AuthController::class, "registerPost"])->name("register.post");
 Route::post("logout", [AuthController::class, "logout"])->name("logout");
+Route::get("google/login", [AuthController::class, "redirectGoogle"])->name("login.google");
+Route::get("google/callback", [AuthController::class, "handleGoogleCallback"])->name("login.google.callback");
 
 Route::group(["prefix" => "admin", "middleware" => ["is_admin"]], function() {
 	Route::get("", [AdminController::class, "dashboard"])->name("admin.dashboard");
