@@ -10,6 +10,7 @@ use App\Models\MentoringInvoice;
 use App\Models\SalesFee;
 use App\Models\ScheduleMentoring;
 use App\Models\User;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -178,5 +179,55 @@ class AdminController extends Controller
             DB::beginTransaction();
             return redirect()->back()->with("errors", $e->getMessage());
         }
+    }
+
+    public function vouchers() {
+        return view("admin.vouchers");
+    }
+
+    public function storeVoucher(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $voucher = new Voucher();
+            $voucher->code_voucher = $this->generate_uuid();
+            $voucher->type_voucher = $request->type_voucher;
+            $voucher->benefit_voucher = $request->benefit_voucher;
+            $voucher->based_voucher = $request->based_voucher;
+            if ($voucher->based_voucher == "time") {
+                $voucher->valid_voucher = $request->valid_voucher;
+                $voucher->expired_voucher = $request->expired_voucher;
+            }
+            if ($voucher->based_voucher == "use") {
+                $voucher->used_voucher = $request->used_voucher;
+            }
+            $voucher->save();
+
+            DB::commit();
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+    }
+
+    protected function generate_uuid() {
+        $uuid = strtoupper(sprintf("%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0C2f) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0x2Aff),
+            mt_rand(0, 0xffD3),
+            mt_rand(0, 0xff4B),
+        ));
+
+        do {
+            $voucher = Voucher::where("code_voucher", $uuid)->first();
+            $uuid = $uuid;
+        } while ($voucher);
+
+        return $uuid;
     }
 }

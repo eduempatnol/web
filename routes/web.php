@@ -38,6 +38,8 @@ Route::group(["prefix" => "admin", "middleware" => ["is_admin"]], function() {
 	Route::get("instructors/data", [AdminController::class, "dataInstructors"])->name("admin.instructors.data");
 	Route::get("instructors/up", [AdminController::class, "upInstructor"])->name("admin.instructors.up");
 	Route::get("instructors/down", [AdminController::class, "downInstructor"])->name("admin.instructors.down");
+	Route::get("vouchers", [AdminController::class, "vouchers"])->name("admin.vouchers");
+	Route::post("vouchers", [AdminController::class, "storeVoucher"])->name("admin.voucher.store");
 });
 
 Route::group(["prefix" => "user", "middleware" => ["is_user"]], function() {
